@@ -2,7 +2,7 @@ import SideNav from "../ui/admin/sidenav";
 
 export default function AdminLayout({ children }) {
   return (
-    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden md:h-full">
+    <div className="flex h-screen flex-col md:flex-row md:overflow-hidden md:h-full bg-white">
       <div className="w-full flex-none md:w-64">
         <SideNav />
       </div>

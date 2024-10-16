@@ -40,7 +40,7 @@ const Products = () => {
             key={product.id}
             className="border rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:shadow-xl hover:scale-105"
           >
-            <Link href={`/products/${product.id}`}>
+            <Link href={`/Products/${product.id}/veiw`}>
               <img
                 src={product.image}
                 alt={product.title}

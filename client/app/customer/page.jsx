@@ -1,5 +1,12 @@
 import React from "react";
+import Hero from "../ui/Hero";
+import Products from "../ui/Products";
 
 export default function page() {
-  return <div>customer page</div>;
+  return (
+    <div>
+      <Hero />
+      <Products />
+    </div>
+  );
 }
