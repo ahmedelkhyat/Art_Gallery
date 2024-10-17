@@ -1,42 +1,31 @@
 import bcrypt from "bcrypt";
 import pool from "../config/db.js";
 
-class UserModel {
-  static async emailExists(email) {
+class AdminModel {
+  static async getAllAdmins() {
     try {
-      const [result] = await pool.query("SELECT * FROM users WHERE email = ?", [
-        email,
-      ]);
-      return result.length > 0;
-    } catch (error) {
-      throw new Error("Error checking email existence: " + error.message);
-    }
-  }
-
-  static async getAllUsers() {
-    try {
-      const [users] = await pool.query(
-        "SELECT * FROM users WHERE is_admin = 0"
+      const [admins] = await pool.query(
+        "SELECT * FROM users WHERE is_admin = 1"
       );
-      return users;
+      return admins;
     } catch (error) {
-      throw new Error("Error retrieving users: " + error.message);
+      throw new Error("Error retrieving admins: " + error.message);
     }
   }
 
-  static async getUserById(id) {
+  static async getAdminById(id) {
     try {
-      const [user] = await pool.query(
-        "SELECT * FROM users WHERE user_id = ? AND is_admin = 0",
+      const [admin] = await pool.query(
+        "SELECT * FROM users WHERE user_id = ? AND is_admin = 1",
         [id]
       );
-      return user[0];
+      return admin[0];
     } catch (error) {
-      throw new Error("Error retrieving user: " + error.message);
+      throw new Error("Error retrieving admin: " + error.message);
     }
   }
 
-  static async createNewUser(
+  static async createNewAdmin(
     name,
     email,
     password,
@@ -47,16 +36,16 @@ class UserModel {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const [result] = await pool.query(
-        "INSERT INTO users (name, email, password, address, phone_number, gender) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO users (name, email, password, address, phone_number, gender, is_admin) VALUES (?, ?, ?, ?, ?, ?, 1)",
         [name, email, hashedPassword, address, phone_number, gender]
       );
-      return this.getUserById(result.insertId);
+      return this.getAdminById(result.insertId);
     } catch (error) {
-      throw new Error("Error creating new user: " + error.message);
+      throw new Error("Error creating new admin: " + error.message);
     }
   }
 
-  static async updateExistingUser(
+  static async updateExistingAdmin(
     id,
     name,
     email,
@@ -104,26 +93,26 @@ class UserModel {
       await pool.query(
         `UPDATE users SET ${updates.join(
           ", "
-        )} WHERE user_id = ? AND is_admin = 0`,
+        )} WHERE user_id = ? AND is_admin = 1`,
         values
       );
-      return this.getUserById(id);
+      return this.getAdminById(id);
     } catch (error) {
-      throw new Error("Error updating user: " + error.message);
+      throw new Error("Error updating admin: " + error.message);
     }
   }
 
-  static async deleteExistingUser(id) {
+  static async deleteExistingAdmin(id) {
     try {
       const [result] = await pool.query(
-        "DELETE FROM users WHERE user_id = ? AND is_admin = 0",
+        "DELETE FROM users WHERE user_id = ? AND is_admin = 1",
         [id]
       );
       return result.affectedRows > 0;
     } catch (error) {
-      throw new Error("Error deleting user: " + error.message);
+      throw new Error("Error deleting admin: " + error.message);
     }
   }
 }
 
-export default UserModel;
+export default AdminModel;

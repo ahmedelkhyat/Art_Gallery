@@ -1,30 +1,30 @@
 import { validationResult } from "express-validator";
-import UserModel from "../models/UserModel.js";
+import AdminModel from "../models/AdminModel.js";
 
-class UserController {
-  static async getUsers(req, res, next) {
+class AdminController {
+  static async getAdmins(req, res, next) {
     try {
-      const users = await UserModel.getAllUsers();
-      res.json(users);
+      const admins = await AdminModel.getAllAdmins();
+      res.json(admins);
     } catch (error) {
       next(error);
     }
   }
 
-  static async getUser(req, res, next) {
+  static async getAdmin(req, res, next) {
     const { id } = req.params;
     try {
-      const user = await UserModel.getUserById(id);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
+      const admin = await AdminModel.getAdminById(id);
+      if (!admin) {
+        return res.status(404).json({ message: "Admin not found" });
       }
-      res.json(user);
+      res.json(admin);
     } catch (error) {
       next(error);
     }
   }
 
-  static async createUser(req, res, next) {
+  static async createAdmin(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -38,7 +38,7 @@ class UserController {
     const { name, email, password, address, phone_number, gender } = req.body;
 
     try {
-      const user = await UserModel.createNewUser(
+      const admin = await AdminModel.createNewAdmin(
         name,
         email,
         password,
@@ -46,19 +46,19 @@ class UserController {
         phone_number,
         gender
       );
-      res.status(201).json(user);
+      res.status(201).json(admin);
     } catch (error) {
       next(error);
     }
   }
 
-  static async updateUser(req, res, next) {
+  static async updateAdmin(req, res, next) {
     const { id } = req.params;
 
     try {
-      const user = await UserModel.getUserById(id);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
+      const admin = await AdminModel.getAdminById(id);
+      if (!admin) {
+        return res.status(404).json({ message: "Admin not found" });
       }
 
       const errors = validationResult(req);
@@ -73,7 +73,7 @@ class UserController {
 
       const { name, email, password, address, phone_number, gender } = req.body;
 
-      const updatedUser = await UserModel.updateExistingUser(
+      const updatedAdmin = await AdminModel.updateExistingAdmin(
         id,
         name,
         email,
@@ -82,35 +82,35 @@ class UserController {
         phone_number,
         gender
       );
-      if (!updatedUser) {
+      if (!updatedAdmin) {
         return res.status(400).json({ message: "No fields to update" });
       }
 
-      res.json(updatedUser);
+      res.json(updatedAdmin);
     } catch (error) {
       next(error);
     }
   }
 
-  static async deleteUser(req, res, next) {
+  static async deleteAdmin(req, res, next) {
     const { id } = req.params;
 
     try {
-      const user = await UserModel.getUserById(id);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
+      const admin = await AdminModel.getAdminById(id);
+      if (!admin) {
+        return res.status(404).json({ message: "Admin not found" });
       }
 
-      const result = await UserModel.deleteExistingUser(id);
+      const result = await AdminModel.deleteExistingAdmin(id);
       if (!result) {
-        return res.status(500).json({ message: "Failed to delete user" });
+        return res.status(500).json({ message: "Failed to delete admin" });
       }
 
-      res.json({ message: "User deleted successfully" });
+      res.json({ message: "Admin deleted successfully" });
     } catch (error) {
       next(error);
     }
   }
 }
 
-export default UserController;
+export default AdminController;

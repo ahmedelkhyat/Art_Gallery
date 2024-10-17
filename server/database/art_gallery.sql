@@ -1,102 +1,122 @@
-CREATE DATABASE art_gallery;
+CREATE DATABASE IF NOT EXISTS art_gallery;
 USE art_gallery;
 
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    gender ENUM('Male', 'Female') NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE Categories (
+CREATE TABLE IF NOT EXISTS categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(100) NOT NULL
+    category_name VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE Products (
+CREATE TABLE IF NOT EXISTS products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    stock INT NOT NULL,
-    category_id INT,
-    image_url VARCHAR(255),
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+    description TEXT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
+    stock INT DEFAULT 0 CHECK (stock >= 0),
+    image_url VARCHAR(255) NOT NULL,
+    category_id INT NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(50) DEFAULT 'Pending',
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    total_amount DECIMAL(10, 2) NOT NULL CHECK (total_amount >= 0),
+    status ENUM('Pending', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+	order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Order_Items (
+CREATE TABLE IF NOT EXISTS order_items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    product_id INT,
-    quantity INT NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    quantity INT DEFAULT 1 CHECK (quantity > 0),
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Cart (
+CREATE TABLE IF NOT EXISTS cart (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    product_id INT,
-    quantity INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    quantity INT DEFAULT 1 CHECK (quantity > 0),
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Customer_Address (
-    address_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    street VARCHAR(255),
-    city VARCHAR(100),
-    state VARCHAR(100),
-    zip_code VARCHAR(20),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+CREATE TABLE IF NOT EXISTS reviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT NOT NULL,
+    review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
-INSERT INTO Users (name, email, password, is_admin) VALUES
-('Ahmed Elkhyat', 'ahmed@gmail.com', 'ahmed12345', FALSE),
-('Laila Ashraf', 'laila@gmail.com', 'laila12345', FALSE);
+INSERT INTO users (name, email, password, address, phone_number, gender, is_admin) VALUES
+('Admin', 'admin@gmail.com', 'admin12345', '10 Tahrir Square, Cairo, Egypt', '+201002345678', 'Male', TRUE),
+('Ahmed Elkhyat', 'ahmed@gmail.com', 'ahmed12345', '24 Abbas El Akkad, Cairo, Egypt', '+201112345678', 'Male', FALSE),
+('Laila Ashraf', 'laila@gmail.com', 'laila12345', '102 Rehab City, Cairo, Egypt', '+201223456789', 'Female', FALSE),
+('Ahmed Morshedy', 'morshedy@gmail.com', 'morshedy12345', '15 El-Salam Street, Cairo, Egypt', '+201334567890', 'Male', FALSE),
+('Mustafa Hussein', 'mustafa@gmail.com', 'mustafa12345', '5 El-Ghazali Street, Cairo, Egypt', '+201445678901', 'Male', FALSE);
 
-INSERT INTO Categories (category_name) VALUES
+INSERT INTO categories (category_name) VALUES
 ('Painting'),
 ('Sculpture'),
-('Photography');
+('Photography'),
+('Digital Art');
 
-INSERT INTO Products (title, description, price, stock, category_id, image_url) VALUES
-('Sunset Landscape', 'A beautiful sunset over a landscape.', 150.00, 10, 1, 'https://example.com/sunset-landscape.jpg'),
-('Abstract Sculpture', 'A modern abstract sculpture.', 300.00, 5, 2, 'https://example.com/abstract-sculpture.jpg'),
-('Black and White Photography', 'A striking black and white photo.', 80.00, 20, 3, 'https://example.com/bnw-photography.jpg');
+INSERT INTO products (title, description, price, stock, image_url, category_id) VALUES
+('Sunset Landscape', 'A beautiful sunset over a landscape.', 150.00, 10, 'https://placehold.co/600x400', 1),
+('Abstract Sculpture', 'A modern abstract sculpture.', 300.00, 5, 'https://placehold.co/600x400', 2),
+('Black and White Photography', 'A striking black and white photo.', 80.00, 20, 'https://placehold.co/600x400', 3),
+('Digital Cityscape', 'A vibrant digital artwork of a cityscape.', 200.00, 15, 'https://placehold.co/600x400', 4);
 
-INSERT INTO Orders (user_id, order_date, status) VALUES
-(1, NOW(), 'Pending'),
-(2, NOW(), 'Pending');
+INSERT INTO orders (total_amount, status, user_id) VALUES
+(380.00, 'Pending', 2),
+(300.00, 'Pending', 3),
+(450.00, 'Pending', 4),
+(120.00, 'Pending', 5);
 
-INSERT INTO Order_Items (order_id, product_id, quantity) VALUES
-(1, 1, 1),
-(1, 3, 2),
-(2, 2, 1);
-
-INSERT INTO Cart (user_id, product_id, quantity) VALUES
-(1, 2, 1),
+INSERT INTO order_items (quantity, order_id, product_id) VALUES
 (2, 1, 1),
-(2, 3, 2);
+(1, 1, 3),
+(1, 2, 2),
+(1, 2, 4),
+(1, 3, 1),
+(1, 4, 3);
 
-INSERT INTO Customer_Address (user_id, street, city, state, zip_code) VALUES
-(1, '123 Elm St', 'New York', 'NY', '10001'),
-(2, '456 Maple Ave', 'Los Angeles', 'CA', '90001');
+INSERT INTO cart (quantity, user_id, product_id) VALUES
+(1, 2, 2),
+(1, 3, 1),
+(1, 4, 4),
+(1, 5, 1);
 
-SELECT * FROM Users;
-SELECT * FROM Categories;
-SELECT * FROM Products;
-SELECT * FROM Orders;
-SELECT * FROM Order_Items;
-SELECT * FROM Cart;
-SELECT * FROM Customer_Address;
+INSERT INTO reviews (rating, comment, product_id, user_id) VALUES
+(5, 'Absolutely stunning! The colors are vibrant and mesmerizing.', 1, 2),
+(4, 'Great sculpture, but a bit smaller than expected.', 2, 3),
+(5, 'This piece is breathtaking! Highly recommend.', 1, 4),
+(3, 'Nice artwork, but the shipping took too long.', 4, 5);
+
+SELECT * FROM users;
+SELECT * FROM categories;
+SELECT * FROM products;
+SELECT * FROM orders;
+SELECT * FROM order_items;
+SELECT * FROM cart;
+SELECT * FROM reviews;
