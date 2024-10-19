@@ -1,5 +1,6 @@
 import express from "express";
 import AdminController from "../controllers/AdminController.js";
+import { authenticateToken } from "../middlewares/authenticateToken.js";
 import {
   createUserValidation,
   updateUserValidation,
@@ -7,10 +8,15 @@ import {
 
 const router = express.Router();
 
-router.get("/admins", AdminController.getAdmins);
-router.get("/admins/:id", AdminController.getAdmin);
+router.get("/admins", authenticateToken, AdminController.getAdmins);
+router.get("/admins/:id", authenticateToken, AdminController.getAdmin);
 router.post("/admins", createUserValidation, AdminController.createAdmin);
-router.patch("/admins/:id", updateUserValidation, AdminController.updateAdmin);
-router.delete("/admins/:id", AdminController.deleteAdmin);
+router.patch(
+  "/admins/:id",
+  authenticateToken,
+  updateUserValidation,
+  AdminController.updateAdmin
+);
+router.delete("/admins/:id", authenticateToken, AdminController.deleteAdmin);
 
 export default router;

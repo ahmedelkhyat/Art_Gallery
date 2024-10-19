@@ -1,5 +1,6 @@
 import express from "express";
 import OrderController from "../controllers/OrderController.js";
+import { authenticateToken } from "../middlewares/authenticateToken.js";
 import {
   createOrderValidation,
   updateOrderValidation,
@@ -9,8 +10,18 @@ const router = express.Router();
 
 router.get("/orders", OrderController.getOrders);
 router.get("/orders/:id", OrderController.getOrder);
-router.post("/orders", createOrderValidation, OrderController.createOrder);
-router.patch("/orders/:id", updateOrderValidation, OrderController.updateOrder);
-router.delete("/orders/:id", OrderController.deleteOrder);
+router.post(
+  "/orders",
+  authenticateToken,
+  createOrderValidation,
+  OrderController.createOrder
+);
+router.patch(
+  "/orders/:id",
+  authenticateToken,
+  updateOrderValidation,
+  OrderController.updateOrder
+);
+router.delete("/orders/:id", authenticateToken, OrderController.deleteOrder);
 
 export default router;

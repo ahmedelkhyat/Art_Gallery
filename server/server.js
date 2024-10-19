@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import authRoutes from "./routes/authRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 // Routes
+app.use(authRoutes);
 app.use(userRouter);
 app.use(adminRouter);
 app.use(categoryRouter);

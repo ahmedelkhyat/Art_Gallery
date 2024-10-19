@@ -1,5 +1,6 @@
 import express from "express";
 import UserController from "../controllers/UserController.js";
+import { authenticateToken } from "../middlewares/authenticateToken.js";
 import {
   createUserValidation,
   updateUserValidation,
@@ -7,10 +8,15 @@ import {
 
 const router = express.Router();
 
-router.get("/users", UserController.getUsers);
-router.get("/users/:id", UserController.getUser);
+router.get("/users", authenticateToken, UserController.getUsers);
+router.get("/users/:id", authenticateToken, UserController.getUser);
 router.post("/users", createUserValidation, UserController.createUser);
-router.patch("/users/:id", updateUserValidation, UserController.updateUser);
-router.delete("/users/:id", UserController.deleteUser);
+router.patch(
+  "/users/:id",
+  authenticateToken,
+  updateUserValidation,
+  UserController.updateUser
+);
+router.delete("/users/:id", authenticateToken, UserController.deleteUser);
 
 export default router;
