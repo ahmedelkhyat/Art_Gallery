@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS products (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    stock INT DEFAULT 0 CHECK (stock >= 0),
+    stock INT DEFAULT 1 CHECK (stock >= 0),
     image VARCHAR(255) NOT NULL,
     category_id INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE

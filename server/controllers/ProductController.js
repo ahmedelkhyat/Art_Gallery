@@ -64,7 +64,7 @@ class ProductController {
       });
     }
 
-    const { title, description, price, stock = 0, category_id } = req.body;
+    const { title, description, price, stock = 1, category_id } = req.body;
 
     if (!image) {
       return res.status(400).json({ message: "Image is required" });
