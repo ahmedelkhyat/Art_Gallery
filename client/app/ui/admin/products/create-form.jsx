@@ -12,7 +12,6 @@ import {
   TicketIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "../buttons";
-import { createProduct } from "../../../lib/actions";
 
 // Validation schema using Yup
 const ProductSchema = Yup.object().shape({
