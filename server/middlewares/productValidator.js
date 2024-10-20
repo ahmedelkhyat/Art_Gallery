@@ -35,13 +35,6 @@ export const createProductValidation = [
     .isInt({ min: 0 })
     .withMessage("Stock must be a positive integer"),
 
-  check("image_url")
-    .notEmpty()
-    .withMessage("Image URL is required")
-    .bail()
-    .isURL()
-    .withMessage("Image URL must be a valid URL"),
-
   check("category_id")
     .notEmpty()
     .withMessage("Category ID is required")
@@ -74,11 +67,6 @@ export const updateProductValidation = [
     .optional()
     .isInt({ min: 0 })
     .withMessage("Stock must be a positive integer"),
-
-  check("image_url")
-    .optional()
-    .isURL()
-    .withMessage("Image URL must be a valid URL"),
 
   check("category_id")
     .optional()

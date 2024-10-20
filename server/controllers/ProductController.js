@@ -1,7 +1,33 @@
+import { promises as fs } from "fs";
 import { validationResult } from "express-validator";
 import ProductModel from "../models/ProductModel.js";
 
 class ProductController {
+  static async handleImageDeletion(image) {
+    if (image) {
+      const imagePath = `images/${image.filename}`;
+      try {
+        await fs.unlink(imagePath);
+      } catch (err) {
+        console.error("Error deleting image:", err);
+      }
+    }
+  }
+
+  static async handleOldImageDeletion(image) {
+    if (
+      image &&
+      !image.startsWith("http://") &&
+      !image.startsWith("https://")
+    ) {
+      try {
+        await fs.unlink(`images/${image}`);
+      } catch (err) {
+        console.error("Error deleting old product image:", err);
+      }
+    }
+  }
+
   static async getProducts(req, res, next) {
     try {
       const products = await ProductModel.getAllProducts();
@@ -26,7 +52,10 @@ class ProductController {
 
   static async createProduct(req, res, next) {
     const errors = validationResult(req);
+    const image = req.file;
+
     if (!errors.isEmpty()) {
+      await ProductController.handleImageDeletion(image);
       return res.status(400).json({
         message: errors
           .array()
@@ -35,14 +64,11 @@ class ProductController {
       });
     }
 
-    const {
-      title,
-      description,
-      price,
-      stock = 0,
-      image_url,
-      category_id,
-    } = req.body;
+    const { title, description, price, stock = 0, category_id } = req.body;
+
+    if (!image) {
+      return res.status(400).json({ message: "Image is required" });
+    }
 
     try {
       const product = await ProductModel.createNewProduct(
@@ -50,7 +76,7 @@ class ProductController {
         description,
         price,
         stock,
-        image_url,
+        image.filename,
         category_id
       );
       res.status(201).json(product);
@@ -65,11 +91,13 @@ class ProductController {
     try {
       const product = await ProductModel.getProductById(id);
       if (!product) {
+        await ProductController.handleImageDeletion(req.file);
         return res.status(404).json({ message: "Product not found" });
       }
 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        await ProductController.handleImageDeletion(req.file);
         return res.status(400).json({
           message: errors
             .array()
@@ -78,8 +106,12 @@ class ProductController {
         });
       }
 
-      const { title, description, price, stock, image_url, category_id } =
-        req.body;
+      const { title, description, price, stock, category_id } = req.body;
+      const image = req.file ? req.file.filename : null;
+
+      if (image) {
+        await ProductController.handleOldImageDeletion(product.image);
+      }
 
       const updatedProduct = await ProductModel.updateExistingProduct(
         id,
@@ -87,7 +119,7 @@ class ProductController {
         description,
         price,
         stock,
-        image_url,
+        image,
         category_id
       );
       if (!updatedProduct) {
@@ -108,6 +140,8 @@ class ProductController {
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
       }
+
+      await ProductController.handleOldImageDeletion(product.image);
 
       const result = await ProductModel.deleteExistingProduct(id);
       if (!result) {
