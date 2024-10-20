@@ -90,10 +90,10 @@ INSERT INTO categories (category_name) VALUES
 ('Digital Art');
 
 INSERT INTO products (title, description, price, stock, image, category_id) VALUES
-('Sunset Landscape', 'A beautiful sunset over a landscape.', 150.00, 10, '1729431642106-247554755.jpg', 1),
-('Abstract Sculpture', 'A modern abstract sculpture.', 300.00, 5, '1729431693855-300063367.jpg', 2),
-('Black and White Photography', 'A striking black and white photo.', 80.00, 20, '1729431749755-465050223.jpg', 3),
-('Digital Cityscape', 'A vibrant digital artwork of a cityscape.', 200.00, 15, '1729431785228-974835248.jpg', 4);
+('Sunset Landscape', 'A beautiful sunset over a landscape.', 150.00, 10, '1729438832793-794590982.jpg', 1),
+('Abstract Sculpture', 'A modern abstract sculpture.', 300.00, 5, '1729438940702-911580209.jpg', 2),
+('Black and White Photography', 'A striking black and white photo.', 80.00, 20, '1729439074977-279571223.jpg', 3),
+('Digital Cityscape', 'A vibrant digital artwork of a cityscape.', 200.00, 15, '1729439147727-959547562.jpg', 4);
 
 INSERT INTO orders (total_amount, status, user_id) VALUES
 (380.00, 'Pending', 2),

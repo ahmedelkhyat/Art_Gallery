@@ -5,7 +5,7 @@ import ProductModel from "../models/ProductModel.js";
 class ProductController {
   static async handleImageDeletion(image) {
     if (image) {
-      const imagePath = `images/${image.filename}`;
+      const imagePath = `../client/public/images/${image.filename}`;
       try {
         await fs.unlink(imagePath);
       } catch (err) {
@@ -21,7 +21,7 @@ class ProductController {
       !image.startsWith("https://")
     ) {
       try {
-        await fs.unlink(`images/${image}`);
+        await fs.unlink(`../client/public/images/${image}`);
       } catch (err) {
         console.error("Error deleting old product image:", err);
       }
