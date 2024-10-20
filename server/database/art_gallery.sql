@@ -12,6 +12,14 @@ CREATE TABLE IF NOT EXISTS users (
     is_admin BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    token_id INT AUTO_INCREMENT PRIMARY KEY,
+    token TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(100) NOT NULL UNIQUE
@@ -114,6 +122,7 @@ INSERT INTO reviews (rating, comment, product_id, user_id) VALUES
 (3, 'Nice artwork, but the shipping took too long.', 4, 5);
 
 SELECT * FROM users;
+SELECT * FROM refresh_tokens;
 SELECT * FROM categories;
 SELECT * FROM products;
 SELECT * FROM orders;
