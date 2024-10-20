@@ -26,7 +26,7 @@ export default async function Table({ query, currentPage }) {
                         <Image
                           src={product.image}
                           className="mr-2 rounded-xl"
-                          width={35}
+                          width={45}
                           height={35}
                           alt={`${product.title}'s profile picture`}
                         />
@@ -100,8 +100,8 @@ export default async function Table({ query, currentPage }) {
                       <Image
                         src={product.image}
                         className="rounded-lg"
-                        width={30} // Set only the width or height, not both if needed
-                        height={30}
+                        width={50} // Set only the width or height, not both if needed
+                        height={45}
                         alt={`${product.title}'s profile picture`}
                       />
                     </td>

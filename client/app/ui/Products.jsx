@@ -40,27 +40,27 @@ const Products = () => {
             key={product.id}
             className="border rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:shadow-xl hover:scale-105"
           >
-            <Link href={`/Products/${product.id}/veiw`}>
+            <Link href={`/customer/${product.id}/view`}>
               <img
                 src={product.image}
                 alt={product.title}
                 className="w-full h-48 object-cover transition-transform duration-300 ease-in-out hover:scale-110" // ضبط ارتفاع الصورة
               />
-              <div className="p-4 bg-white">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {product.title}
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  {product.description.slice(0, 60)}...
-                </p>
-                <p className="text-xl font-bold text-gray-900 mt-2">
-                  ${product.price}
-                </p>
-                <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
-                  إضافة إلى السلة
-                </button>
-              </div>
             </Link>
+            <div className="p-4 bg-white">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {product.title}
+              </h3>
+              <p className="text-gray-600 mt-2">
+                {product.description.slice(0, 60)}...
+              </p>
+              <p className="text-xl font-bold text-gray-900 mt-2">
+                ${product.price}
+              </p>
+              <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
+                إضافة إلى السلة
+              </button>
+            </div>
           </div>
         ))}
       </div>

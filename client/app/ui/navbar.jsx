@@ -112,10 +112,10 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link href="/login" className="hover:underline">
+                <Link href="/customer/login" className="hover:underline">
                   تسجيل الدخول
                 </Link>
-                <Link href="/signup" className="hover:underline">
+                <Link href="/customer/signup" className="hover:underline">
                   إنشاء حساب
                 </Link>
               </>

@@ -27,9 +27,9 @@ export default function RootLayout({ children }) {
         <title>Your Website Title</title>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <MainNav />
+        {/* <MainNav /> */}
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );

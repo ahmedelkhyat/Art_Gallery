@@ -20,9 +20,7 @@ export async function fetchProductById(id) {
 
 export async function fetchCategories() {
   try {
-    const response = await axios.get(
-      "https://fakestoreapi.com/products/categories"
-    );
+    const response = await axios.get("http://localhost:5000/categories");
     return response.data;
   } catch (e) {
     console.log(e);
