@@ -27,13 +27,13 @@ class ProductModel {
     description,
     price,
     stock,
-    image_url,
+    image,
     category_id
   ) {
     try {
       const [result] = await pool.query(
-        "INSERT INTO products (title, description, price, stock, image_url, category_id) VALUES (?, ?, ?, ?, ?, ?)",
-        [title, description, price, stock, image_url, category_id]
+        "INSERT INTO products (title, description, price, stock, image, category_id) VALUES (?, ?, ?, ?, ?, ?)",
+        [title, description, price, stock, image, category_id]
       );
       return this.getProductById(result.insertId);
     } catch (error) {
@@ -47,7 +47,7 @@ class ProductModel {
     description,
     price,
     stock,
-    image_url,
+    image,
     category_id
   ) {
     const updates = [];
@@ -69,9 +69,9 @@ class ProductModel {
       updates.push("stock = ?");
       values.push(stock);
     }
-    if (image_url) {
-      updates.push("image_url = ?");
-      values.push(image_url);
+    if (image) {
+      updates.push("image = ?");
+      values.push(image);
     }
     if (category_id) {
       updates.push("category_id = ?");
