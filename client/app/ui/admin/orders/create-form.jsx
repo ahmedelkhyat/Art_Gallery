@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // Import useRouter for client-side routing
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
@@ -15,18 +15,9 @@ import { Button } from "../buttons";
 
 // Validation schema using Yup
 const ProductSchema = Yup.object().shape({
-  image: Yup.mixed()
-    .required("Please upload an image")
-    .test(
-      "fileSize",
-      "File is too large (max 5MB)",
-      (value) => value && value.size <= 5 * 1024 * 1024
-    )
-    .test(
-      "fileFormat",
-      "Unsupported Format (Only JPG, PNG allowed)",
-      (value) => value && ["image/jpeg", "image/png"].includes(value.type)
-    ),
+  image: Yup.string()
+    .url("Please enter a valid URL")
+    .required("Please upload an image"),
   category: Yup.string().required("Please select a category"),
   title: Yup.string().required("Please enter a title"),
   description: Yup.string().required("Please enter a description"),
@@ -37,22 +28,23 @@ const ProductSchema = Yup.object().shape({
 });
 
 export default function ProductForm({ categories }) {
-  const [imagePreview, setImagePreview] = useState("");
   const [message, setMessage] = useState(null);
-  const router = useRouter();
+  const router = useRouter(); // Use Next.js router
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-    const formData = new FormData();
-    formData.append("image", values.image); // Append the file (image)
-    formData.append("category_id", values.category);
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("price", values.amount);
-
     try {
       const response = await fetch("http://localhost:5000/products", {
         method: "POST",
-        body: formData, // Send FormData instead of JSON
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image_url: values.image,
+          category_id: values.category,
+          title: values.title,
+          description: values.description,
+          price: values.amount,
+        }),
       });
 
       const result = await response.json();
@@ -82,61 +74,36 @@ export default function ProductForm({ categories }) {
     }
   };
 
-  const handleImageChange = (event, setFieldValue) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFieldValue("image", file); // Set the file in Formik
-      setImagePreview(URL.createObjectURL(file)); // For preview
-    }
-  };
-
   return (
     <Formik
       initialValues={{
-        image: null,
+        image: "",
         category: "",
         amount: "",
         title: "",
-        description: "",
+        description: "", // Added description to initialValues
       }}
       validationSchema={ProductSchema}
       onSubmit={handleSubmit}
     >
       {({ setFieldValue, isSubmitting }) => (
         <Form className="rounded-md bg-gray-50 p-4 md:p-6">
-          {/* Image Input */}
-          <div className="mb-4 flex items-center">
-            <label
-              htmlFor="image"
-              className="mb-2 block text-sm font-medium mr-5"
-            >
-              Choose Image
+          {/* Image URL Input */}
+          <div className="mb-4">
+            <label htmlFor="image" className="mb-2 block text-sm font-medium">
+              Image URL
             </label>
             <div className="relative mt-2 rounded-md">
-              <input
-                type="file"
-                name="image"
-                id="image"
-                accept="image/jpeg, image/png"
-                className="sr-only"
-                onChange={(event) => handleImageChange(event, setFieldValue)}
-              />
-              <label
-                htmlFor="image"
-                className="relative flex min-h-[50px] items-center justify-center rounded-md border border-dashed bg-white hover:cursor-pointer hover:bg-slate-300 border-[#e0e0e0] p-6 text-center transition-colors"
-              >
-                {imagePreview ? (
-                  <div className="mt-4 flex justify-center">
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="w-full h-64 object-cover rounded-lg shadow-lg"
-                    />
-                  </div>
-                ) : (
-                  <PlusIcon className="pointer-events-none h-[30px] w-[30px] text-gray-500" />
-                )}
-              </label>
+              <div className="relative">
+                <Field
+                  id="image"
+                  name="image"
+                  type="text"
+                  placeholder="Enter image URL"
+                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                />
+                <PlusIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+              </div>
               <ErrorMessage
                 name="image"
                 component="div"
@@ -169,7 +136,7 @@ export default function ProductForm({ categories }) {
             </div>
           </div>
 
-          {/* Description */}
+          {/* Description  */}
           <div className="mb-4">
             <label
               htmlFor="description"
