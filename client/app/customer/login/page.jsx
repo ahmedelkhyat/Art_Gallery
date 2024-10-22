@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       // تحقق من بيانات تسجيل الدخول (يمكنك استخدام API هنا)
-      const response = await fetch("http://localhost:5000/users", {
+      const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

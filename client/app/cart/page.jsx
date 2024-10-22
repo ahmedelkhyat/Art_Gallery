@@ -60,7 +60,6 @@ const Cart = () => {
     if (updatedCart[index].quantity > 1) {
       updatedCart[index].quantity -= 1;
       localStorage.setItem("cart", JSON.stringify(updatedCart));
-      setCartItems(updatedCart);
     }
   };
 
@@ -96,13 +95,13 @@ const Cart = () => {
         <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
           سلة التسوق
         </h1>
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cartItems.map((item, index) => (
             <div
               key={index}
-              className="border rounded-lg p-4 flex justify-between items-center shadow-md hover:shadow-lg transition-shadow duration-300"
+              className="border rounded-lg p-4 flex flex-col md:flex-row justify-between items-center shadow-md hover:shadow-lg transition-shadow duration-300"
             >
-              <div className="flex items-center">
+              <div className="flex items-center w-full md:w-auto">
                 <Image
                   src={`/images/${item.image}`} // تأكد من أن الصورة تستخدم المسار الصحيح
                   alt={item.title}
@@ -110,11 +109,11 @@ const Cart = () => {
                   height={100}
                   className="object-cover rounded-lg"
                 />
-                <div className="ml-4">
+                <div className="ml-4 flex-grow">
                   <h3 className="text-lg font-semibold text-gray-800 hover:text-yellow-600 transition duration-200">
                     {item.title}
                   </h3>
-                  <div className="flex items-center">
+                  <div className="flex items-center mt-2 md:mt-0">
                     <button
                       onClick={() => decreaseQuantity(index)}
                       className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition duration-200"
@@ -138,19 +137,19 @@ const Cart = () => {
               </div>
               <button
                 onClick={() => removeProduct(index)}
-                className="text-red-500 hover:text-red-700 transition duration-200"
+                className="text-red-500 hover:text-red-700 transition duration-200 mt-4 md:mt-0"
               >
                 <FiTrash2 />
               </button>
             </div>
           ))}
         </div>
-        <div className="mt-8 flex justify-between items-center">
+        <div className="mt-8 flex justify-between items-center flex-wrap">
           <p className="text-2xl font-bold text-green-600">
             الإجمالي: ${total.toFixed(2)}
           </p>
           <Link href="/checkout">
-            <button className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200">
+            <button className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200 mt-4 sm:mt-0">
               متابعة إلى الدفع
             </button>
           </Link>

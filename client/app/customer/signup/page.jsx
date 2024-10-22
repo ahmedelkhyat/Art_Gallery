@@ -25,9 +25,9 @@ const Signup = () => {
 
     try {
       // إرسال بيانات التسجيل إلى API
-      const response = await fetch("https://your-api-endpoint/signup", {
+      const response = await fetch("http://localhost:5000/signup", {
         method: "POST",
-        headers: {
+        headers: {  
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, email, password }),
