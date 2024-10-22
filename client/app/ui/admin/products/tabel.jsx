@@ -48,8 +48,8 @@ export default async function Table({ query, currentPage }) {
                     <p className=" font-medium">Count : {product.stock}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateProduct id={product.id} />
-                    <DeleteProduct />
+                    <UpdateProduct id={product.product_id} />
+                    <DeleteProduct id={product.product_id} />
                   </div>
                 </div>
               </div>

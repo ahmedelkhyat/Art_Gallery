@@ -1,6 +1,9 @@
+"use client";
 import Link from "next/link";
 import clsx from "clsx";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 export function CreateProduct() {
   return (
@@ -14,12 +17,51 @@ export function CreateProduct() {
   );
 }
 
+//pass as action in form
+// const deleteInvoiceWithId = deleteInvoice.bind(null, id);
 export function DeleteProduct({ id }) {
-  //pass as action in form
-  // const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+  const [message, setMessage] = useState(null);
+
+  const handleDelete = async (event) => {
+    event.preventDefault(); // Prevent the form from refreshing the page
+
+    try {
+      const response = await fetch(`http://localhost:5000/products/${id}`, {
+        method: "DELETE", // DELETE request to the API
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Product deleted successfully!",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      } else {
+        setErrors(result.errors || { general: "An error occurred" });
+        Swal.fire({
+          icon: "error",
+          title: `${result.message}`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      }
+    } catch (error) {
+      // setErrors(result.errors || { general: "An error occurred" });
+      Swal.fire({
+        icon: "error",
+        title: `${error}`,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  };
 
   return (
-    <form>
+    <form onSubmit={handleDelete}>
       <button
         type="submit"
         className="rounded-md border p-2 hover:bg-red-600 hover:text-white"
@@ -27,6 +69,7 @@ export function DeleteProduct({ id }) {
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-4" />
       </button>
+      {message && <p className="mt-2 text-sm text-red-500">{message}</p>}
     </form>
   );
 }
