@@ -12,49 +12,38 @@ export default async function Table({ query, currentPage }) {
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {products.length === 0 ? (
-              <div>4</div>
-            ) : (
-              products?.map((product) => (
-                <div
-                  key={product.id}
-                  className="mb-2 w-full rounded-md bg-white p-4"
-                >
-                  <div className="flex items-center justify-between border-b pb-4">
-                    <div>
-                      <div className="mb-2 flex items-center">
-                        <Image
-                          src={product.image}
-                          className="mr-2 rounded-xl"
-                          width={45}
-                          height={35}
-                          alt={`${product.title}'s profile picture`}
-                        />
-                        <p> {formatTitle(product.title)}</p>
-                      </div>
-                      <p className="text-sm text-gray-500">
-                        {product.category}
-                      </p>
+            {products?.map((product) => (
+              <div
+                key={product.id}
+                className="mb-2 w-full rounded-md bg-white p-4"
+              >
+                <div className="flex items-center justify-between border-b pb-4">
+                  <div>
+                    <div className="mb-2 flex items-center">
+                      <Image
+                        src={`/images/${product.image}`}
+                        className="mr-2 rounded-sm"
+                        width={60}
+                        height={60}
+                        alt={`${product.title}'s profile picture`}
+                      />
+                      <p> {formatTitle(product.title)}</p>
                     </div>
-                    <p className="font-medium">${product.price}</p>
+                    <p className="text-sm text-gray-500">{product.category}</p>
                   </div>
-                  <div className="flex w-full items-center justify-between pt-4">
-                    <div>
-                      <p className=" font-medium">
-                        Count : {product.rating.count}
-                      </p>
-                      <p className="font-medium ">
-                        Rating : {product.rating.rate}
-                      </p>
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <UpdateProduct id={product.id} />
-                      <DeleteProduct />
-                    </div>
+                  <p className="font-medium">${product.price}</p>
+                </div>
+                <div className="flex w-full items-center justify-between pt-4">
+                  <div>
+                    <p className=" font-medium">Count : {product.stock}</p>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <UpdateProduct id={product.id} />
+                    <DeleteProduct />
                   </div>
                 </div>
-              ))
-            )}
+              </div>
+            ))}
           </div>
           <table className="hidden min-w-full text-gray-900 md:table overflow-y-scroll">
             <thead className="rounded-lg text-left text-sm font-normal">
@@ -93,15 +82,15 @@ export default async function Table({ query, currentPage }) {
                   >
                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex items-center gap-3">
-                        <p>{product.id}</p>
+                        <p>{product.product_id}</p>
                       </div>
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
                       <Image
-                        src={product.image}
+                        src={`/images/${product.image}`}
                         className="rounded-lg"
-                        width={50} // Set only the width or height, not both if needed
-                        height={45}
+                        width={50}
+                        height={50}
                         alt={`${product.title}'s profile picture`}
                       />
                     </td>
@@ -109,18 +98,18 @@ export default async function Table({ query, currentPage }) {
                       {formatTitle(product.title)}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
-                      {product.category}
+                      {product.category_id}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
-                      {product.price}
+                      {product.price}$
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
-                      {product.rating.count}
+                      {product.stock}
                     </td>
                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                       <div className="flex justify-end gap-3">
-                        <UpdateProduct id={product.id} />
-                        <DeleteProduct />
+                        <UpdateProduct id={product.product_id} />
+                        <DeleteProduct id={product.product_id} />
                       </div>
                     </td>
                   </tr>

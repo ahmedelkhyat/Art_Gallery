@@ -43,17 +43,17 @@ export default function ProductForm({ categories }) {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     const formData = new FormData();
-    formData.append("image", values.image); // Append the file (image)
+    formData.append("image", values.image);
     formData.append("category_id", values.category);
     formData.append("title", values.title);
     formData.append("description", values.description);
     formData.append("price", values.amount);
-
     try {
       const response = await fetch("http://localhost:5000/products", {
         method: "POST",
         body: formData, // Send FormData instead of JSON
       });
+      console.log(formData);
 
       const result = await response.json();
       if (response.ok) {
@@ -117,7 +117,7 @@ export default function ProductForm({ categories }) {
                 type="file"
                 name="image"
                 id="image"
-                accept="image/jpeg, image/png"
+                accept="image/jpeg, image/png,image/jpg"
                 className="sr-only"
                 onChange={(event) => handleImageChange(event, setFieldValue)}
               />
