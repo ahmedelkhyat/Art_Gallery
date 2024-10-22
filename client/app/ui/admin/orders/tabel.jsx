@@ -1,4 +1,4 @@
-import { DeleteProduct, UpdateProduct } from "../buttons";
+import { DeleteProduct, UpdateOrder, UpdateProduct } from "../buttons";
 
 // import { formatTitle } from "../../../lib/utils";
 import { fetchOrders, fetchUsersById } from "@/app/lib/data";
@@ -41,7 +41,7 @@ export default async function Table() {
                     <p>{formatDateToLocal(order.order_date)}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateProduct id={order.order_id} />
+                    <UpdateOrder id={order.order_id} />
                     <DeleteProduct id={order.order_id} />
                   </div>
                 </div>
@@ -104,7 +104,7 @@ export default async function Table() {
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateProduct id={order.order_id} />
+                      <UpdateOrder id={order.order_id} />
                       <DeleteProduct id={order.order_id} />
                     </div>
                   </td>

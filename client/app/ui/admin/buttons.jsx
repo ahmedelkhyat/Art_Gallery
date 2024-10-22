@@ -85,6 +85,17 @@ export function UpdateProduct({ id }) {
   );
 }
 
+export function UpdateOrder({ id }) {
+  return (
+    <Link
+      href={`/admin/orders/${id}/edit`}
+      className="rounded-md border p-2 hover:bg-green-600 hover:text-white"
+    >
+      <PencilIcon className="w-5" />
+    </Link>
+  );
+}
+
 export function Button({ children, className, ...rest }) {
   return (
     <button
