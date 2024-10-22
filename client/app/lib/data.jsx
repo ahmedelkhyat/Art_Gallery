@@ -62,3 +62,12 @@ export async function fetchCategories() {
     console.log(e);
   }
 }
+
+export async function fetchCategoryByID(id) {
+  try {
+    const response = await axios.get(`http://localhost:5000/categories/${id}`);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+}

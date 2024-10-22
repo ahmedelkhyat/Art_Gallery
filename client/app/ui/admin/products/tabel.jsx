@@ -1,11 +1,19 @@
 import Image from "next/image";
 
 import { DeleteProduct, UpdateProduct } from "../buttons";
-import { fetchProducts } from "../../../lib/data";
+import {
+  fetchCategories,
+  fetchCategoryByID,
+  fetchProducts,
+} from "../../../lib/data";
 import { formatTitle } from "../../../lib/utils";
 
 export default async function Table({ query, currentPage }) {
   const products = await fetchProducts();
+  async function categoryName(id) {
+    const category = await fetchCategoryByID(id);
+    return category.category_name;
+  }
 
   return (
     <div className="mt-6 flow-root">
@@ -29,7 +37,9 @@ export default async function Table({ query, currentPage }) {
                       />
                       <p> {formatTitle(product.title)}</p>
                     </div>
-                    <p className="text-sm text-gray-500">{product.category}</p>
+                    <p className="text-sm text-gray-500">
+                      {categoryName(product.category_id)}
+                    </p>
                   </div>
                   <p className="font-medium">${product.price}</p>
                 </div>
@@ -98,7 +108,7 @@ export default async function Table({ query, currentPage }) {
                       {formatTitle(product.title)}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
-                      {product.category_id}
+                      {categoryName(product.category_id)}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3">
                       {product.price}$
