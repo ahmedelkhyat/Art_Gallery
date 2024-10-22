@@ -38,7 +38,7 @@ const ProductSchema = Yup.object().shape({
 
 export default function ProductForm({ categories }) {
   const [imagePreview, setImagePreview] = useState("");
-  const [message, setMessage] = useState(null);
+
   const router = useRouter();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
@@ -57,7 +57,6 @@ export default function ProductForm({ categories }) {
 
       const result = await response.json();
       if (response.ok) {
-        setMessage("Product created successfully!");
         Swal.fire({
           icon: "success",
           title: "Product created successfully!",
@@ -270,9 +269,6 @@ export default function ProductForm({ categories }) {
               {isSubmitting ? "Submitting..." : "Create Product"}
             </Button>
           </div>
-
-          {/* Display message if product is created */}
-          {message && <p className="mt-4 text-sm text-green-500">{message}</p>}
         </Form>
       )}
     </Formik>

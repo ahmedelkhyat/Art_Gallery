@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Swal from "sweetalert2";
 import * as Yup from "yup";
 import {
   TagIcon,
@@ -29,36 +31,58 @@ const ProductSchema = Yup.object().shape({
 });
 
 export default function EditProductForm({ product, categories }) {
-  const [message, setMessage] = useState(null);
-
-  // Handle form submission using Formik's onSubmit
+  const router = useRouter();
   const handleSubmit = async (values, { setSubmitting }) => {
-    setMessage(null); // Clear message
-    const formData = new FormData();
-    formData.append("stock", values.stock);
-    formData.append("category_id", values.category);
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("price", values.amount);
     try {
-      const response = await fetch(`/api/products/${product.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: formData,
-      });
-      console.log(formData);
+      const payload = {
+        stock: values.stock,
+        category_id: values.category,
+        title: values.title,
+        description: values.description,
+        price: values.price, // Make sure the key matches the form field name
+      };
+      console.log(product.product_id);
+      // Send the PATCH request with JSON payload
+      const response = await fetch(
+        `http://localhost:5000/products/${product.product_id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
       if (response.ok) {
-        setMessage("Product updated successfully!");
+        Swal.fire({
+          icon: "success",
+          title: "Product updated successfully!",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+
+        router.push("/admin");
       } else {
-        setMessage("Failed to update product.");
+        setErrors(result.errors || { general: "An error occurred" });
+        Swal.fire({
+          icon: "error",
+          title: `${result.message}`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
       }
     } catch (error) {
-      setMessage("An error occurred while updating the product.");
+      setErrors(result.errors || { general: "An error occurred" });
+      Swal.fire({
+        icon: "error",
+        title: `${result.message}`,
+        showConfirmButton: false,
+        timer: 3000,
+      });
       console.error("Error updating product:", error);
     } finally {
-      setSubmitting(false); // Enable the submit button again
+      setSubmitting(false);
     }
   };
 
@@ -68,7 +92,7 @@ export default function EditProductForm({ product, categories }) {
         title: product.title || "",
         price: product.price || 0,
         description: product.description || "",
-        category: product.category || "",
+        category: product.category_id || "",
         stock: product.stock || 0,
       }}
       validationSchema={ProductSchema}
@@ -79,7 +103,7 @@ export default function EditProductForm({ product, categories }) {
           {/* Product title */}
           <div className="mb-4">
             <label htmlFor="title" className="mb-2 block text-sm font-medium">
-              Product title
+              {product.id}
             </label>
             <div className="relative">
               <Field
@@ -154,8 +178,8 @@ export default function EditProductForm({ product, categories }) {
               Choose Category
             </label>
             <div className="relative">
-              <select
-                defaultValue={product.category_id}
+              <Field
+                as="select"
                 id="category"
                 name="category"
                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
@@ -171,7 +195,7 @@ export default function EditProductForm({ product, categories }) {
                     {category.category_name}
                   </option>
                 ))}
-              </select>
+              </Field>
               <TagIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
             </div>
             <ErrorMessage
@@ -214,7 +238,6 @@ export default function EditProductForm({ product, categories }) {
             </Link>
             <Button type="submit">Edit Product</Button>
           </div>
-          {message}
         </Form>
       )}
     </Formik>
