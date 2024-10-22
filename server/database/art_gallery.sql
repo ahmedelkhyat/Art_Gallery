@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS products (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
-    stock INT DEFAULT 0 CHECK (stock >= 0),
+    stock INT DEFAULT 1 CHECK (stock >= 0),
     image VARCHAR(255) NOT NULL,
     category_id INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
@@ -90,10 +90,26 @@ INSERT INTO categories (category_name) VALUES
 ('Digital Art');
 
 INSERT INTO products (title, description, price, stock, image, category_id) VALUES
-('Sunset Landscape', 'A beautiful sunset over a landscape.', 150.00, 10, '1729438832793-794590982.jpg', 1),
-('Abstract Sculpture', 'A modern abstract sculpture.', 300.00, 5, '1729438940702-911580209.jpg', 2),
-('Black and White Photography', 'A striking black and white photo.', 80.00, 20, '1729439074977-279571223.jpg', 3),
-('Digital Cityscape', 'A vibrant digital artwork of a cityscape.', 200.00, 15, '1729439147727-959547562.jpg', 4);
+('Ocean Waves', 'A serene view of ocean waves crashing on the shore.', 120.00, 15, '1729511922904-823505444.jpg', 1),
+('Abstract Night', 'A captivating abstract painting of a starry night.', 180.00, 8, '1729511985498-996569797.jpg', 1),
+('Forest Path', 'A tranquil forest path in autumn.', 140.00, 12, '1729512138924-815988420.jpg', 1),
+('Modern Art Piece', 'An innovative piece that challenges traditional forms.', 250.00, 6, '1729512357203-16802927.jpg', 2),
+('Stone Sculpture', 'A detailed stone sculpture of a mythical creature.', 500.00, 3, '1729512476115-925612357.jpg', 2),
+('Nature Photography', 'A stunning photograph capturing nature in all its glory.', 100.00, 20, '1729512553906-501419355.jpg', 3),
+('City Lights', 'A dazzling view of city lights at night.', 130.00, 10, '1729512607543-464703453.jpg', 3),
+('Digital Portrait', 'A digital portrait of a famous historical figure.', 220.00, 5, '1729512747600-348815761.jpg', 4),
+('Floral Arrangement', 'A colorful arrangement of flowers in bloom.', 90.00, 25, '1729512865051-834704277.jpg', 1),
+('Vintage Car', 'A classic photograph of a vintage car.', 75.00, 30, '1729512947688-437107907.jpg', 3),
+('Golden Sunset', 'A breathtaking sunset over the ocean.', 160.00, 10, '1729513381490-464628553.jpg', 1),
+('Contemporary Art', 'A striking piece that explores modern themes.', 300.00, 4, '1729513457195-844568819.jpg', 2),
+('Waves at Dusk', 'An enchanting view of waves at dusk.', 115.00, 15, '1729513633118-595255400.jpg', 1),
+('Abstract Lines', 'A colorful abstract piece featuring dynamic lines.', 210.00, 7, '1729513765010-325999388.jpg', 4),
+('Portrait Photography', 'A captivating portrait that tells a story.', 140.00, 8, '1729513865366-926906365.jpg', 3),
+('Geometric Shapes', 'A bold piece made of geometric shapes and colors.', 180.00, 6, '1729513941011-75960478.jpg', 4),
+('Desert Landscape', 'A stunning landscape of the desert at sunrise.', 150.00, 10, '1729514005359-543649132.jpg', 1),
+('Street Art', 'A photo capturing vibrant street art in the city.', 95.00, 12, '1729514161955-940403391.jpg', 3),
+('Rustic Charm', 'A rustic painting depicting rural life.', 130.00, 14, '1729514244552-890562009.jpg', 1),
+('Digital Landscape', 'A futuristic digital landscape.', 240.00, 5, '1729514327995-438255237.jpg', 4);
 
 INSERT INTO orders (total_amount, status, user_id) VALUES
 (380.00, 'Pending', 2),
