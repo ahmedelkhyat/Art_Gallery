@@ -15,8 +15,9 @@ const Cart = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
+        const response = await fetch("http://localhost:5000/products");
         const data = await response.json();
+        console.log(data); // تحقق من البيانات
         setAvailableProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -40,7 +41,7 @@ const Cart = () => {
 
   // إضافة منتج إلى السلة
   const addProductToCart = (product) => {
-    const updatedCart = [...cartItems, { ...product, quantity: 1 }];
+    const updatedCart = [...cartItems, { ...product, price: Number(product.price), quantity: 1 }];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setCartItems(updatedCart);
   };
@@ -84,13 +85,12 @@ const Cart = () => {
 
   // حساب إجمالي السعر
   const total = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc, item) => acc + (Number(item.price) * item.quantity),
     0
   );
 
   return (
     <>
-      {" "}
       <Navbar />
       <div className="container mx-auto py-10 px-4">
         <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
@@ -104,7 +104,7 @@ const Cart = () => {
             >
               <div className="flex items-center">
                 <Image
-                  src={item.image}
+                  src={`/images/${item.image}`} // تأكد من أن الصورة تستخدم المسار الصحيح
                   alt={item.title}
                   width={100}
                   height={100}
@@ -132,7 +132,7 @@ const Cart = () => {
                     </button>
                   </div>
                   <p className="text-xl font-bold text-gray-900 mt-2">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${(Number(item.price) * item.quantity).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -148,8 +148,7 @@ const Cart = () => {
         <div className="mt-8 flex justify-between items-center">
           <p className="text-2xl font-bold text-green-600">
             الإجمالي: ${total.toFixed(2)}
-          </p>{" "}
-          {/* تغيير لون الإجمالي إلى أخضر */}
+          </p>
           <Link href="/checkout">
             <button className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200">
               متابعة إلى الدفع
@@ -172,7 +171,7 @@ const Cart = () => {
               className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <Image
-                src={product.image}
+                src={`/images/${product.image}`} // تأكد من أن الصورة في المسار الصحيح
                 alt={product.title}
                 width={100}
                 height={100}
@@ -182,7 +181,7 @@ const Cart = () => {
                 {product.title}
               </h3>
               <p className="text-xl font-bold text-gray-900">
-                ${product.price.toFixed(2)}
+                ${Number(product.price).toFixed(2)}
               </p>
               <button
                 onClick={() => addProductToCart(product)}

@@ -9,11 +9,11 @@ const Hero = () => {
   const [loading, setLoading] = useState(true); // حالة التحميل
   const [error, setError] = useState(null); // حالة الخطأ
 
-  // جلب البيانات من Fakestore API
+  // جلب البيانات من API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
+        const response = await fetch("http://localhost:5000/products");
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setProducts(data); // حفظ المنتجات
@@ -36,7 +36,7 @@ const Hero = () => {
     return () => clearInterval(interval); // تنظيف الـ interval عند إزالة المكون
   }, [products.length]);
 
-  if (loading) return <div className="text-center py-20">Loading...</div>;
+  if (loading) return <div className="text-center py-20">جارٍ التحميل...</div>;
   if (error) return <div className="text-center py-20">{error}</div>;
 
   // دالة للذهاب إلى الصورة التالية
@@ -58,19 +58,17 @@ const Hero = () => {
 
   return (
     <div className="relative bg-gray-800 text-white h-[600px] overflow-hidden">
-      {" "}
-      {/* زيادة الارتفاع */}
       {/* عرض الصورة الحالية */}
       <div className="w-full h-full relative">
         {products.length > 0 ? (
           <img
-            src={products[currentIndex]?.image}
+            src={`./images/${products[currentIndex]?.image}`} // تأكد من استخدام الحقل الصحيح للصور
             alt={products[currentIndex]?.title}
             className="w-full h-full object-contain transition-transform duration-1000 ease-in-out"
             style={{ maxHeight: "600px" }} // تعيين max-height لتجنب الصورة الكبيرة
           />
         ) : (
-          <div>No products available</div>
+          <div>لا توجد منتجات متاحة</div>
         )}
       </div>
       {/* تراكب مظلم */}
@@ -103,8 +101,6 @@ const Hero = () => {
       {/* زر تحت الشريط المنقط */}
       <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2">
         <Link href="/more-products">
-          {" "}
-          {/* تغيير الرابط هنا */}
           <button className="bg-yellow-500 text-black px-4 py-2 rounded-md hover:bg-yellow-600 transition">
             عرض المزيد
           </button>

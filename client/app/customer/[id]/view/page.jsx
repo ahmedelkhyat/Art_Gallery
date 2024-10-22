@@ -5,18 +5,15 @@ import { useRouter } from "next/navigation"; // استخدام next/navigation
 
 const ProductDetails = ({ params }) => {
   const router = useRouter();
-  const id = params.id;
-  // الحصول على معرف المنتج من الرابط
+  const id = params.id; // الحصول على معرف المنتج من الرابط
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(id);
+  
   useEffect(() => {
     if (id) {
       const fetchProduct = async () => {
         try {
-          const response = await fetch(
-            `https://fakestoreapi.com/products/${id}`
-          );
+          const response = await fetch(`http://localhost:5000/products/${id}`);
           const data = await response.json();
           setProduct(data); // تخزين بيانات المنتج
         } catch (error) {
@@ -30,6 +27,22 @@ const ProductDetails = ({ params }) => {
     }
   }, [id]);
 
+  // دالة لإضافة المنتج إلى السلة
+  const addToCart = () => {
+    const cartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+      quantity: 1 // تعيين الكمية إلى 1 عند الإضافة
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const updatedCart = [...existingCart, cartItem];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    alert(`${product.title} تمت إضافته إلى السلة!`); // رسالة تأكيد
+  };
+
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
 
   if (!product)
@@ -42,7 +55,7 @@ const ProductDetails = ({ params }) => {
       </h2>
       <div className="flex flex-col md:flex-row">
         <img
-          src={product.image}
+          src={`/images/${product.image}`} 
           alt={product.title}
           className="w-full md:w-1/2 h-auto object-cover"
         />
@@ -51,7 +64,10 @@ const ProductDetails = ({ params }) => {
           <p className="text-xl font-bold text-gray-900 mt-4">
             ${product.price}
           </p>
-          <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
+          <button
+            onClick={addToCart} // ربط الزر بالدالة
+            className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition"
+          >
             إضافة إلى السلة
           </button>
         </div>

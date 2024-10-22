@@ -7,12 +7,12 @@ import { CgSearch } from "react-icons/cg"; // أيقونة البحث
 
 const itemList = [
   { name: "All Categories", path: "/" },
-  { name: "Electronics", path: "/electronics" },
-  { name: "Clothes", path: "/clothes" },
-  { name: "Jewelry", path: "/jewelry" },
-  { name: "Men's Clothing", path: "/mens-clothing" },
-  { name: "Gifts", path: "/gifts" },
-  { name: "New Products", path: "/new-products" },
+  { name: "Painting", path: "/Painting" },
+  { name: "Sculpture", path: "/Sculpture" },
+  { name: "Photography", path: "/Photography" },
+  { name: "Digital Art", path: "/DigitalArt" },
+  
+  
 ];
 
 const Navbar = () => {

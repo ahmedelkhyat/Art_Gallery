@@ -2,20 +2,26 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image"; // لتحسين عرض الصور
 
-const MensClothing = () => {
+const Painting = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // حالة الخطأ
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // جلب البيانات من Fake Store API لفئة ملابس الرجال
-        const response = await fetch("https://fakestoreapi.com/products/category/men's clothing");
+        const response = await fetch("http://localhost:5000/products"); // جلب جميع المنتجات
+        if (!response.ok) throw new Error("فشل جلب المنتجات"); // تحقق من حالة الاستجابة
         const data = await response.json();
-        setProducts(data); // تخزين المنتجات في الحالة
+
+        // تصفية المنتجات الخاصة بالفئة ذات category_id 1
+        const filteredProducts = data.filter(product => product.category_id === 1);
+        setProducts(filteredProducts); // تخزين المنتجات المصفاة
       } catch (error) {
         console.error("Error fetching products:", error);
+        setError(error.message); // تخزين رسالة الخطأ
       } finally {
         setLoading(false); // إنهاء التحميل
       }
@@ -25,18 +31,21 @@ const MensClothing = () => {
   }, []);
 
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>; // عرض رسالة الخطأ
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">Men's Clothing</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">Paintings</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <div key={product.id} className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105">
             <Link href={`/products/${product.id}`}>
               <div className="relative">
-                <img
-                  src={product.image}
+                <Image
+                  src={`/images/${product.image}`} // تعديل مسار الصورة
                   alt={product.title}
+                  width={300} // عرض الصورة
+                  height={300} // ارتفاع الصورة
                   className="w-full h-64 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                 />
                 <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
@@ -57,4 +66,4 @@ const MensClothing = () => {
   );
 };
 
-export default MensClothing;
+export default Painting;

@@ -88,7 +88,7 @@ const Signup = () => {
         </button>
       </form>
       <p className="mt-4 text-center">
-        لديك حساب بالفعل؟ <Link href="/login" className="text-yellow-500 font-semibold">تسجيل الدخول</Link>
+        لديك حساب بالفعل؟ <Link href="/customer/login" className="text-yellow-500 font-semibold">تسجيل الدخول</Link>
       </p>
     </div>
   );

@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       // تحقق من بيانات تسجيل الدخول (يمكنك استخدام API هنا)
-      const response = await fetch("https://your-api-endpoint/login", {
+      const response = await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const Login = () => {
           </button>
         </div>
         <p className="mt-4 text-center text-gray-600">
-          ليس لديك حساب؟ <a href="/signup" className="text-yellow-500">إنشاء حساب</a>
+          ليس لديك حساب؟ <a href="/customer/signup" className="text-yellow-500">إنشاء حساب</a>
         </p>
       </div>
     </div>
