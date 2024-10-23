@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import AuthModel from "../models/AuthModel.js";
 
@@ -16,6 +17,16 @@ class AuthController {
   }
 
   static async login(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors
+          .array()
+          .map((error) => error.msg)
+          .join(", "),
+      });
+    }
+
     const { email, password } = req.body;
 
     try {
@@ -41,11 +52,17 @@ class AuthController {
   }
 
   static async refreshToken(req, res, next) {
-    const refreshToken = req.body.token;
-
-    if (!refreshToken) {
-      return res.status(401).json({ message: "Refresh token is required" });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors
+          .array()
+          .map((error) => error.msg)
+          .join(", "),
+      });
     }
+
+    const refreshToken = req.body.token;
 
     try {
       const result = await AuthModel.getRefreshToken(refreshToken);
@@ -75,11 +92,17 @@ class AuthController {
   }
 
   static async logout(req, res, next) {
-    const refreshToken = req.body.token;
-
-    if (!refreshToken) {
-      return res.status(401).json({ message: "Refresh token is required" });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors
+          .array()
+          .map((error) => error.msg)
+          .join(", "),
+      });
     }
+
+    const refreshToken = req.body.token;
 
     try {
       const token = await AuthModel.getRefreshToken(refreshToken);
