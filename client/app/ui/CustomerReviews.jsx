@@ -26,48 +26,24 @@ const CustomerReviews = () => {
   if (loading)
     return <p className="text-center text-gray-500">جارٍ التحميل...</p>;
 
-  // إضافة آراء جديدة بشكل مباشر
-  const additionalReviews = [
-    {
-      id: 4,
-      customerName: "فاطمة",
-      comment: "منتج رائع جدًا، سأعيد الشراء بالتأكيد!",
-      rating: 5,
-      customerImage: "https://via.placeholder.com/100",
-    },
-    {
-      id: 5,
-      customerName: "يوسف",
-      comment: "الخدمة كانت ممتازة وسريعة.",
-      rating: 4,
-      customerImage: "https://via.placeholder.com/100",
-    },
-  ];
-
-  const allReviews = [...reviews, ...additionalReviews];
-
   return (
     <div className="container mx-auto py-10 px-4">
       <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
         آراء العملاء
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {allReviews.map((review) => (
+        {reviews.map((review) => (
           <div
             key={review.review_id}
             className="border rounded-lg p-6 shadow-lg transition-transform duration-300 transform hover:scale-105 bg-white relative"
           >
             <div className="flex items-center mb-4">
-              <img
-                src={review.customerImage || "https://via.placeholder.com/100"} // استخدام الصورة الافتراضية إذا لم توجد
-                alt={review.customerName}
-                className="w-16 h-16 rounded-full object-cover mr-4" // شكل دائري للصورة
-              />
+              <UserCircleIcon className="h-6 w-6 text-gray-500 mr-2" />
               <h3 className="text-lg font-semibold text-gray-900">
-                {review.customerName}
+                {/* استخدام اسم افتراضي أو أي من بيانات المستخدم */}
+                {`Customer ${review.user_id}`}
               </h3>
               {/* إضافة أيقونة الأشخاص */}
-              <UserCircleIcon className="h-6 w-6 text-gray-500 ml-2" />
             </div>
             <p className="text-gray-700 mt-2">{review.comment}</p>
             <div className="mt-4 flex items-center">
