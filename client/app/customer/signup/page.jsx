@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Signup = () => {
@@ -32,22 +32,19 @@ const Signup = () => {
         body: JSON.stringify(formData),
       });
 
-      // تحقق من حالة الرد إذا كانت غير ناجحة
       if (!response.ok) {
-        const errorData = await response.json(); // الحصول على الرسالة من السيرفر إذا كانت موجودة
+        const errorData = await response.json();
         throw new Error(errorData.message || "Signup failed");
       }
 
-      const data = await response.json(); // الحصول على الرد إذا كان ناجحًا
-      console.log("Response Data:", data); // نقاط تفحص
+      const data = await response.json();
+      console.log("Response Data:", data);
 
       setSuccessMessage("Signup successful! Redirecting...");
       setErrorMessage("");
 
-      // إعادة التوجيه بعد نجاح التسجيل
       setTimeout(() => router.push("/customer/login"), 2000);
     } catch (error) {
-      // عرض الرسالة في الكونسول والواجهة
       console.error("Error:", error.message);
       setErrorMessage(error.message || "Signup failed. Please try again.");
       setSuccessMessage("");
@@ -58,10 +55,16 @@ const Signup = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <div className="flex-grow flex justify-center items-center py-10">
         <div className="bg-white shadow-lg rounded-lg p-10 w-full max-w-lg">
-          <h1 className="text-3xl font-bold text-center mb-6">Create an Account</h1>
+          <h1 className="text-3xl font-bold text-center mb-6">
+            Create an Account
+          </h1>
 
-          {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
-          {successMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-500 text-center mb-4">{errorMessage}</p>
+          )}
+          {successMessage && (
+            <p className="text-green-500 text-center mb-4">{successMessage}</p>
+          )}
 
           <form onSubmit={handleSubmit}>
             <div className="mb-4">

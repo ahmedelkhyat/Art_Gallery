@@ -1,9 +1,10 @@
-"use client"; // مكون عميل
+"use client";
 
 import localFont from "next/font/local";
 import "./globals.css";
 import Footer from "./ui/Footer";
 import MainNav from "./ui/navbar";
+import { AuthProvider } from "./context/AuthContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,9 +28,11 @@ export default function RootLayout({ children }) {
         <title>Your Website Title</title>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* <MainNav /> */}
-        {children}
-        {/* <Footer /> */}
+        <AuthProvider>
+          {/* <MainNav /> */}
+          {children}
+          {/* <Footer /> */}
+        </AuthProvider>
       </body>
     </html>
   );
