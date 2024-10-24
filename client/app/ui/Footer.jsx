@@ -18,7 +18,7 @@ const Footer = () => {
             <ul>
               <li>
                 <Link
-                  href="/about"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Who We Are
@@ -26,7 +26,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Contact Us
@@ -34,7 +34,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/careers"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Careers
@@ -47,7 +47,7 @@ const Footer = () => {
             <ul>
               <li>
                 <Link
-                  href="/faq"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   FAQ
@@ -55,7 +55,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/returns"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Returns Policy
@@ -63,7 +63,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/shipping"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Shipping & Delivery
@@ -76,7 +76,7 @@ const Footer = () => {
             <ul>
               <li>
                 <Link
-                  href="/products"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Products
@@ -84,7 +84,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/categories"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Categories
@@ -92,7 +92,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/specials"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Specials
@@ -105,7 +105,7 @@ const Footer = () => {
             <ul>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Privacy Policy
@@ -113,7 +113,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/terms"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Terms of Service
@@ -121,7 +121,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/cookies"
+                  href="/"
                   className="hover:underline hover:text-yellow-400"
                 >
                   Cookie Policy
@@ -132,24 +132,23 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-lg mb-4">Follow Us</h4>
             <div className="flex space-x-4">
-              <Link href="#" className="hover:text-yellow-400">
+              <Link href="/" className="hover:text-yellow-400">
                 <FaFacebookF size={20} />
               </Link>
-              <Link href="#" className="hover:text-yellow-400">
+              <Link href="/" className="hover:text-yellow-400">
                 <FaTwitter size={20} />
               </Link>
-              <Link href="#" className="hover:text-yellow-400">
+              <Link href="/" className="hover:text-yellow-400">
                 <FaInstagram size={20} />
               </Link>
-              <Link href="#" className="hover:text-yellow-400">
+              <Link href="/" className="hover:text-yellow-400">
                 <FaLinkedinIn size={20} />
               </Link>
             </div>
           </div>
         </div>
-
         <div className="text-center text-gray-400">
-          <p>© 2024 MyStore. All rights reserved.</p>
+          <p>© 2024 ARTZ. All rights reserved.</p>
         </div>
       </div>
     </footer>
