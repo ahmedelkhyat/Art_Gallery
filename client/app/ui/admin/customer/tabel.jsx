@@ -1,6 +1,11 @@
 import Image from "next/image";
 
-import { DeleteProduct, UpdateProduct } from "../buttons";
+import {
+  DeleteCustomer,
+  DeleteProduct,
+  UpdateCustomer,
+  UpdateProduct,
+} from "../buttons";
 import { fetchProducts, fetchUsers } from "../../../lib/data";
 import { formatTitle } from "../../../lib/utils";
 
@@ -31,8 +36,8 @@ export default async function Table({ query, currentPage }) {
                     <p className=" font-medium">{product.phone_number}</p>
                   </div>
                   <div className="flex justify-end gap-2">
-                    <UpdateProduct id={product.id} />
-                    <DeleteProduct />
+                    <UpdateCustomer id={product.user_id} />
+                    <DeleteCustomer id={product.user_id} />
                   </div>
                 </div>
               </div>
@@ -87,8 +92,8 @@ export default async function Table({ query, currentPage }) {
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateProduct id={product.product_id} />
-                      <DeleteProduct id={product.product_id} />
+                      <UpdateCustomer id={product.user_id} />
+                      <DeleteCustomer id={product.user_id} />
                     </div>
                   </td>
                 </tr>

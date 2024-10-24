@@ -1,7 +1,7 @@
 "use client"; // تأكد من أن المكون يعمل كعميل
 
 import { useEffect, useState } from "react";
-import { UserCircleIcon } from '@heroicons/react/24/solid'; // استخدم أيقونة مختلفة من الإصدار 2
+import { UserCircleIcon } from "@heroicons/react/24/solid"; // استخدم أيقونة مختلفة من الإصدار 2
 
 const CustomerReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -23,7 +23,8 @@ const CustomerReviews = () => {
     fetchReviews();
   }, []);
 
-  if (loading) return <p className="text-center text-gray-500">جارٍ التحميل...</p>;
+  if (loading)
+    return <p className="text-center text-gray-500">جارٍ التحميل...</p>;
 
   // إضافة آراء جديدة بشكل مباشر
   const additionalReviews = [
@@ -53,7 +54,7 @@ const CustomerReviews = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {allReviews.map((review) => (
           <div
-            key={review.id}
+            key={review.review_id}
             className="border rounded-lg p-6 shadow-lg transition-transform duration-300 transform hover:scale-105 bg-white relative"
           >
             <div className="flex items-center mb-4">
@@ -70,7 +71,9 @@ const CustomerReviews = () => {
             </div>
             <p className="text-gray-700 mt-2">{review.comment}</p>
             <div className="mt-4 flex items-center">
-              <span className="text-yellow-500 font-bold">تقييم: {review.rating} ★</span>
+              <span className="text-yellow-500 font-bold">
+                تقييم: {review.rating} ★
+              </span>
             </div>
             {/* إضافة أيقونة داخل الصورة */}
             <div className="absolute top-0 right-0 p-2">
