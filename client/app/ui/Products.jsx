@@ -43,8 +43,18 @@ const Products = () => {
     };
 
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const updatedCart = [...existingCart, cartItem];
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    const existingItemIndex = existingCart.findIndex(
+      (item) => item.id === cartItem.id
+    );
+
+    if (existingItemIndex > -1) {
+      existingCart[existingItemIndex].quantity += 1;
+    } else {
+      existingCart.push(cartItem);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(existingCart));
 
     const Toast = Swal.mixin({
       toast: true,

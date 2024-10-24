@@ -19,7 +19,6 @@ const Cart = () => {
       try {
         const response = await fetch("http://localhost:5000/products");
         const data = await response.json();
-        console.log(data);
         setAvailableProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -46,10 +45,21 @@ const Cart = () => {
   };
 
   const addProductToCart = (product) => {
-    const updatedCart = [
-      ...cartItems,
-      { ...product, price: Number(product.price), quantity: 1 },
-    ];
+    const updatedCart = [...cartItems];
+    const existingItemIndex = updatedCart.findIndex(
+      (item) => item.id === product.product_id
+    );
+
+    if (existingItemIndex > -1) {
+      updatedCart[existingItemIndex].quantity += 1;
+    } else {
+      updatedCart.push({
+        ...product,
+        price: Number(product.price),
+        quantity: 1,
+      });
+    }
+
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setCartItems(updatedCart);
   };
@@ -142,36 +152,29 @@ const Cart = () => {
               </div>
               <button
                 onClick={() => removeProduct(index)}
-                className="text-red-500 hover:text-red-700 transition duration-200 mt-4 md:mt-0"
+                className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition duration-200 mt-4 md:mt-0"
               >
                 <FiTrash2 />
               </button>
             </div>
           ))}
         </div>
-        <div className="mt-8 flex justify-between items-center flex-wrap">
-          <p className="text-2xl font-bold text-green-600">
-            Total: ${total.toFixed(2)}
-          </p>
-          <Link href="/checkout">
-            <button className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200 mt-4 sm:mt-0">
-              Proceed to Checkout
-            </button>
-          </Link>
-        </div>
-        <div className="mt-4 flex justify-between">
+        <div className="flex justify-between items-center mt-8">
           <button
             onClick={clearCart}
-            className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200"
+            className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition duration-200"
           >
             Clear Cart
           </button>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Total: ${total.toFixed(2)}
+          </h2>
         </div>
         <h2 className="text-2xl font-bold mt-6">Add Product</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
           {availableProducts.map((product) => (
             <div
-              key={product.id}
+              key={product.product_id}
               className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <Image
