@@ -24,7 +24,6 @@ const Login = () => {
     }
 
     try {
-      // تحقق من بيانات تسجيل الدخول (يمكنك استخدام API هنا)
       const response = await fetch("http://localhost:5000/login", {
         method: "POST",
         headers: {
@@ -35,10 +34,20 @@ const Login = () => {
 
       if (!response.ok) throw new Error("البريد الإلكتروني أو كلمة المرور غير صحيحة.");
 
-      // إذا كانت بيانات الاعتماد صحيحة، انتقل إلى الصفحة الرئيسية أو السلة
-      router.push("/"); // أو "/cart" إذا كنت تريد الانتقال إلى السلة
+      const data = await response.json();
+
+      // تخزين توكن المستخدم في localStorage
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data));
+
+      // إعادة التوجيه بناءً على نوع المستخدم
+      if (data.is_admin === 0) {
+        router.push("/admin"); // إعادة التوجيه إلى صفحة الإدارة
+      } else {
+        router.push("/Profile"); // إعادة التوجيه إلى صفحة الملف الشخصي
+      }
     } catch (error) {
-      setError(error.message);
+      setError(error.message); // عرض الخطأ
     } finally {
       setLoading(false); // إنهاء التحميل
     }

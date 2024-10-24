@@ -6,10 +6,13 @@ import Image from "next/image"; // لتحسين عرض الصور
 import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi"; // أيقونات من react-icons
 import Footer from "../ui/Footer";
 import Navbar from "../ui/navbar";
+import { useRouter } from "next/navigation"; // استخدم useRouter
 
 const Cart = () => {
+  const router = useRouter(); // استخدام useRouter
   const [cartItems, setCartItems] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // حالة تسجيل الدخول
 
   // جلب قائمة المنتجات المتاحة من API
   useEffect(() => {
@@ -32,6 +35,18 @@ const Cart = () => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(storedCart);
   }, []);
+
+  // التحقق من حالة تسجيل الدخول
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    const userLoggedIn = accessToken ? true : false; // إذا كان الـ token موجودًا، اعتبر أن المستخدم مسجل دخول
+
+    setIsLoggedIn(userLoggedIn);
+
+    if (!userLoggedIn) {
+      router.push("/customer/login"); // إعادة التوجيه إلى صفحة تسجيل الدخول
+    }
+  }, [router]);
 
   // مسح سلة التسوق
   const clearCart = () => {
@@ -60,6 +75,7 @@ const Cart = () => {
     if (updatedCart[index].quantity > 1) {
       updatedCart[index].quantity -= 1;
       localStorage.setItem("cart", JSON.stringify(updatedCart));
+      setCartItems(updatedCart);
     }
   };
 

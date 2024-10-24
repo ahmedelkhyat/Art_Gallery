@@ -1,95 +1,161 @@
-"use client"; // إضافة هذا السطر لجعل المكون عميلًا
-import { useState } from "react";
+"use client";
+
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from 'next/link'; // استيراد Link من مكتبة next/link
 
 const Signup = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    address: "",
+    phone_number: "",
+    gender: "Male",
+  });
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    // التحقق من صحة المدخلات
-    if (!name || !email || !password) {
-      setError("الرجاء ملء جميع الحقول.");
-      setLoading(false);
-      return;
-    }
-
     try {
-      // إرسال بيانات التسجيل إلى API
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("http://localhost:5000/users", {
         method: "POST",
-        headers: {  
+        headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error("فشل تسجيل الحساب.");
+      // تحقق من حالة الرد إذا كانت غير ناجحة
+      if (!response.ok) {
+        const errorData = await response.json(); // الحصول على الرسالة من السيرفر إذا كانت موجودة
+        throw new Error(errorData.message || "Signup failed");
+      }
 
-      // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول
-      router.push("/login");
+      const data = await response.json(); // الحصول على الرد إذا كان ناجحًا
+      console.log("Response Data:", data); // نقاط تفحص
+
+      setSuccessMessage("Signup successful! Redirecting...");
+      setErrorMessage("");
+
+      // إعادة التوجيه بعد نجاح التسجيل
+      setTimeout(() => router.push("/customer/login"), 2000);
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      // عرض الرسالة في الكونسول والواجهة
+      console.error("Error:", error.message);
+      setErrorMessage(error.message || "Signup failed. Please try again.");
+      setSuccessMessage("");
     }
   };
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <h2 className="text-4xl font-bold mb-8 text-center text-yellow-500">إنشاء حساب</h2>
-      {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg border border-gray-300">
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">الاسم</label>
-          <input
-            type="text"
-            className="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-150 ease-in-out"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className="flex-grow flex justify-center items-center py-10">
+        <div className="bg-white shadow-lg rounded-lg p-10 w-full max-w-lg">
+          <h1 className="text-3xl font-bold text-center mb-6">Create an Account</h1>
+
+          {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
+          {successMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700">Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700">Address</label>
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded"
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700">Phone Number</label>
+              <input
+                type="tel"
+                name="phone_number"
+                value={formData.phone_number}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded"
+                required
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-gray-700">Gender</label>
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border rounded"
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 shadow-lg"
+            >
+              Sign Up
+            </button>
+          </form>
+
+          <div className="mt-4 text-center">
+            <p className="text-gray-600">Already have an account?</p>
+            <button
+              onClick={() => router.push("/customer/login")}
+              className="text-blue-600 hover:underline"
+            >
+              Log In
+            </button>
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">البريد الإلكتروني</label>
-          <input
-            type="email"
-            className="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-150 ease-in-out"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">كلمة المرور</label>
-          <input
-            type="password"
-            className="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-150 ease-in-out"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button 
-          type="submit" 
-          className={`w-full py-2 px-4 rounded-md transition duration-150 ease-in-out ${loading ? 'bg-gray-400' : 'bg-yellow-500 hover:bg-yellow-600'} text-white font-semibold`}
-          disabled={loading} // تعطيل الزر أثناء التحميل
-        >
-          {loading ? 'جارٍ إنشاء الحساب...' : 'إنشاء حساب'}
-        </button>
-      </form>
-      <p className="mt-4 text-center">
-        لديك حساب بالفعل؟ <Link href="/customer/login" className="text-yellow-500 font-semibold">تسجيل الدخول</Link>
-      </p>
+      </div>
     </div>
   );
 };

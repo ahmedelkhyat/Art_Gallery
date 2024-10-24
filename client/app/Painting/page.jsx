@@ -38,8 +38,8 @@ const Painting = () => {
       <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">Paintings</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <div key={product.id} className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105">
-            <Link href={`/products/${product.id}`}>
+          <div key={product.product_id} className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105">
+            <Link href={`/customer/${product.product_id}/view`}> {/* تعديل هنا */}
               <div className="relative">
                 <Image
                   src={`/images/${product.image}`} // تعديل مسار الصورة

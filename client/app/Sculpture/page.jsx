@@ -37,7 +37,7 @@ const Sculpture = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {sculptures.map((sculpture) => (
           <div key={sculpture.product_id} className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105">
-            <Link href={`/products/${sculpture.product_id}`}>
+            <Link href={`/customer/${sculpture.product_id}/view`}> {/* تعديل هنا */}
               <div className="relative">
                 <img
                   src={`/images/${sculpture.image}`} // استخدام الصورة من قاعدة البيانات

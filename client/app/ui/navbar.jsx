@@ -1,5 +1,5 @@
 "use client"; // إضافة هذا السطر في الأعلى لجعل المكون عميلًا
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation"; // استخدام next/navigation
 import { BiCart } from "react-icons/bi"; // أيقونة العربة
@@ -11,8 +11,6 @@ const itemList = [
   { name: "Sculpture", path: "/Sculpture" },
   { name: "Photography", path: "/Photography" },
   { name: "Digital Art", path: "/DigitalArt" },
-  
-  
 ];
 
 const Navbar = () => {
@@ -21,18 +19,31 @@ const Navbar = () => {
   const router = useRouter();
   const [isMenuOpen, setMenuOpen] = useState(false); // حالة القائمة
 
+  // استعادة حالة المستخدم من localStorage عند تحميل الصفحة
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // استعادة حالة المستخدم من localStorage
+    }
+  }, []);
+
   const searchHandler = () => {
-    router.push(`/search/${query}`);
+    if (query) {
+      router.push(`/SearchPage/${query}`);
+    }
   };
 
   const handleLogin = () => {
     // هنا يمكنك إضافة وظيفة تسجيل الدخول الخاصة بك
-    setUser({ name: "Ahmed" }); // مثال على تسجيل الدخول
+    const userData = { name: "Ahmed" }; // بيانات المستخدم
+    localStorage.setItem("user", JSON.stringify(userData)); // تخزين البيانات في localStorage
+    setUser(userData); // تعيين حالة المستخدم
   };
 
   const handleLogout = () => {
     // هنا يمكنك إضافة وظيفة تسجيل الخروج الخاصة بك
-    setUser(null); // مثال على تسجيل الخروج
+    setUser(null); // تعيين حالة المستخدم كـ null
+    localStorage.removeItem("user"); // حذف بيانات المستخدم من localStorage
     router.push("/"); // إعادة التوجيه إلى الصفحة الرئيسية
   };
 
@@ -78,9 +89,7 @@ const Navbar = () => {
 
           {/* صندوق البحث */}
           <div
-            className={`flex items-center w-[50%] ${
-              isMenuOpen ? "block" : "hidden"
-            } md:flex`}
+            className={`flex items-center w-[50%] ${isMenuOpen ? "block" : "hidden"} md:flex`}
           >
             <input
               type="text"
@@ -108,7 +117,9 @@ const Navbar = () => {
                 >
                   تسجيل الخروج
                 </span>
-                <span className="hover:underline">{user.name}</span>
+                <Link href="/Profile" className="hover:underline">
+                  {user.name} (الملف الشخصي)
+                </Link>
               </>
             ) : (
               <>
@@ -135,12 +146,8 @@ const Navbar = () => {
       </div>
 
       {/* الجزء الثاني: شريط الفئات */}
-      <div
-        className={`bg-gray-700 text-white py-2 ${
-          isMenuOpen ? "block" : "hidden"
-        } md:flex`}
-      >
-        <div className="container mx-auto flex space-x-4 overflow-x-auto">
+      <div className={`bg-gray-700 text-white py-2 ${isMenuOpen ? "block" : "hidden"} md:flex`}>
+        <div className="container mx-auto flex justify-center space-x-4 overflow-x-auto">
           {itemList.map((item, index) => (
             <Link
               href={item.path}
