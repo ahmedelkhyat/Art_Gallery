@@ -85,6 +85,72 @@ export function UpdateProduct({ id }) {
   );
 }
 
+export function DeleteCustomer({ id }) {
+  const [message, setMessage] = useState(null);
+
+  const handleDelete = async (event) => {
+    event.preventDefault(); // Prevent the form from refreshing the page
+
+    try {
+      const response = await fetch(`http://localhost:5000/users/${id}`, {
+        method: "DELETE", // DELETE request to the API
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Customer deleted successfully!",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      } else {
+        setErrors(result.errors || { general: "An error occurred" });
+        Swal.fire({
+          icon: "error",
+          title: `${result.message}`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      }
+    } catch (error) {
+      // setErrors(result.errors || { general: "An error occurred" });
+      Swal.fire({
+        icon: "error",
+        title: `${error}`,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  };
+
+  return (
+    <form onSubmit={handleDelete}>
+      <button
+        type="submit"
+        className="rounded-md border p-2 hover:bg-red-600 hover:text-white"
+      >
+        <span className="sr-only">Delete</span>
+        <TrashIcon className="w-4" />
+      </button>
+      {message && <p className="mt-2 text-sm text-red-500">{message}</p>}
+    </form>
+  );
+}
+
+export function UpdateCustomer({ id }) {
+  return (
+    <Link
+      href={`/admin/customers/${id}/edit`}
+      className="rounded-md border p-2 hover:bg-green-600 hover:text-white"
+    >
+      <PencilIcon className="w-5" />
+    </Link>
+  );
+}
+
 export function UpdateOrder({ id }) {
   return (
     <Link
@@ -93,6 +159,61 @@ export function UpdateOrder({ id }) {
     >
       <PencilIcon className="w-5" />
     </Link>
+  );
+}
+
+export function DeleteOrders({ id }) {
+  const [message, setMessage] = useState(null);
+
+  const handleDelete = async (event) => {
+    event.preventDefault(); // Prevent the form from refreshing the page
+
+    try {
+      const response = await fetch(`http://localhost:5000/orders/${id}`, {
+        method: "DELETE", // DELETE request to the API
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Order deleted successfully!",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      } else {
+        setErrors(result.errors || { general: "An error occurred" });
+        Swal.fire({
+          icon: "error",
+          title: `${result.message}`,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      }
+    } catch (error) {
+      // setErrors(result.errors || { general: "An error occurred" });
+      Swal.fire({
+        icon: "error",
+        title: `${error}`,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  };
+
+  return (
+    <form onSubmit={handleDelete}>
+      <button
+        type="submit"
+        className="rounded-md border p-2 hover:bg-red-600 hover:text-white"
+      >
+        <span className="sr-only">Delete</span>
+        <TrashIcon className="w-4" />
+      </button>
+      {message && <p className="mt-2 text-sm text-red-500">{message}</p>}
+    </form>
   );
 }
 

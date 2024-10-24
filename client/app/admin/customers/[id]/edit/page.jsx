@@ -1,17 +1,18 @@
-import Form from "@/app/ui/admin/products/edit-product";
+import Form from "@/app/ui/admin/customer/edit-product";
 
 // import { notFound } from "next/navigation";
 import {
   fetchCategories,
   fetchProductById,
   fetchProducts,
+  fetchUsersById,
 } from "@/app/lib/data";
 import Breadcrumbs from "@/app/ui/admin/products/breadcrumbs";
 
 export default async function Page({ params }) {
   const id = params.id;
   const [product, categories] = await Promise.all([
-    fetchProductById(id),
+    fetchUsersById(id),
     fetchCategories(),
   ]);
 
@@ -23,15 +24,15 @@ export default async function Page({ params }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Products", href: "/admin" },
+          { label: "Customers", href: "/admin/customers" },
           {
-            label: "Edit Product",
-            href: `/admin/${id}/edit`,
+            label: "Edit Customer",
+            href: `/admin/customers/${id}/edit`,
             active: true,
           },
         ]}
       />
-      <Form product={product} categories={categories} />
+      <Form product={product} />
     </main>
   );
 }

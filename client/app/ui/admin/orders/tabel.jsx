@@ -1,4 +1,9 @@
-import { DeleteProduct, UpdateOrder, UpdateProduct } from "../buttons";
+import {
+  DeleteOrders,
+  DeleteProduct,
+  UpdateOrder,
+  UpdateProduct,
+} from "../buttons";
 
 // import { formatTitle } from "../../../lib/utils";
 import { fetchOrders, fetchUsersById } from "@/app/lib/data";
@@ -42,7 +47,7 @@ export default async function Table() {
                   </div>
                   <div className="flex justify-end gap-2">
                     <UpdateOrder id={order.order_id} />
-                    <DeleteProduct id={order.order_id} />
+                    <DeleteOrders id={order.order_id} />
                   </div>
                 </div>
               </div>
@@ -105,7 +110,7 @@ export default async function Table() {
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       <UpdateOrder id={order.order_id} />
-                      <DeleteProduct id={order.order_id} />
+                      <DeleteOrders id={order.order_id} />
                     </div>
                   </td>
                 </tr>
