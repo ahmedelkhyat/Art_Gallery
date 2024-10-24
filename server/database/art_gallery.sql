@@ -115,7 +115,11 @@ INSERT INTO orders (total_amount, status, user_id) VALUES
 (380.00, 'Pending', 2),
 (300.00, 'Pending', 3),
 (450.00, 'Pending', 4),
-(120.00, 'Pending', 5);
+(120.00, 'Pending', 5),
+(250.00, 'Shipped', 2),
+(370.00, 'Delivered', 3),
+(590.00, 'Cancelled', 4),
+(180.00, 'Delivered', 5);
 
 INSERT INTO order_items (quantity, order_id, product_id) VALUES
 (2, 1, 1),
@@ -123,19 +127,31 @@ INSERT INTO order_items (quantity, order_id, product_id) VALUES
 (1, 2, 2),
 (1, 2, 4),
 (1, 3, 1),
-(1, 4, 3);
+(1, 4, 3),
+(1, 5, 4),
+(2, 6, 1),
+(1, 7, 3),
+(1, 8, 2);
 
 INSERT INTO cart (quantity, user_id, product_id) VALUES
 (1, 2, 2),
 (1, 3, 1),
 (1, 4, 4),
-(1, 5, 1);
+(1, 5, 1),
+(1, 2, 5),
+(1, 3, 6),
+(2, 4, 7),
+(1, 5, 8);
 
 INSERT INTO reviews (rating, comment, product_id, user_id) VALUES
 (5, 'Absolutely stunning! The colors are vibrant and mesmerizing.', 1, 2),
 (4, 'Great sculpture, but a bit smaller than expected.', 2, 3),
 (5, 'This piece is breathtaking! Highly recommend.', 1, 4),
-(3, 'Nice artwork, but the shipping took too long.', 4, 5);
+(3, 'Nice artwork, but the shipping took too long.', 4, 5),
+(5, 'Amazing piece, it looks even better in person!', 5, 2),
+(4, 'Very good quality, but the delivery was slow.', 3, 3),
+(5, 'Perfect addition to my collection, highly recommended!', 6, 4),
+(3, 'The artwork was okay, but not as expected.', 7, 5);
 
 SELECT * FROM users;
 SELECT * FROM refresh_tokens;
