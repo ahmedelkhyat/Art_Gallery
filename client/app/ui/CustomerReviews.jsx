@@ -1,7 +1,7 @@
-"use client"; // تأكد من أن المكون يعمل كعميل
+"use client";
 
 import { useEffect, useState } from "react";
-import { UserCircleIcon } from "@heroicons/react/24/solid"; // استخدم أيقونة مختلفة من الإصدار 2
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 
 const CustomerReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -10,9 +10,9 @@ const CustomerReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch("http://localhost:5000/reviews"); // تأكد من رابط الـ API الخاص بالآراء
+        const response = await fetch("http://localhost:5000/reviews");
         const data = await response.json();
-        setReviews(data); // تخزين البيانات في الحالة
+        setReviews(data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       } finally {
@@ -23,13 +23,12 @@ const CustomerReviews = () => {
     fetchReviews();
   }, []);
 
-  if (loading)
-    return <p className="text-center text-gray-500">جارٍ التحميل...</p>;
+  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
 
   return (
     <div className="container mx-auto py-10 px-4">
       <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
-        آراء العملاء
+        Customer Reviews
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {reviews.map((review) => (
@@ -40,18 +39,15 @@ const CustomerReviews = () => {
             <div className="flex items-center mb-4">
               <UserCircleIcon className="h-6 w-6 text-gray-500 mr-2" />
               <h3 className="text-lg font-semibold text-gray-900">
-                {/* استخدام اسم افتراضي أو أي من بيانات المستخدم */}
                 {`Customer ${review.user_id}`}
               </h3>
-              {/* إضافة أيقونة الأشخاص */}
             </div>
             <p className="text-gray-700 mt-2">{review.comment}</p>
             <div className="mt-4 flex items-center">
               <span className="text-yellow-500 font-bold">
-                تقييم: {review.rating} ★
+                Rating: {review.rating} ★
               </span>
             </div>
-            {/* إضافة أيقونة داخل الصورة */}
             <div className="absolute top-0 right-0 p-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
