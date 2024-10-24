@@ -14,7 +14,9 @@ const SearchPage = () => {
       // محاكاة طلب بيانات البحث
       const fetchResults = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/search?query=${query}`);
+          const response = await fetch(
+            `http://localhost:5000/search?query=${query}`
+          );
           if (!response.ok) {
             throw new Error("Error fetching search results");
           }
@@ -31,8 +33,14 @@ const SearchPage = () => {
     }
   }, [query]);
 
-  if (loading) return <div className="text-center mt-20 text-lg">Loading...</div>;
-  if (results.length === 0) return <div className="text-center mt-20 text-lg">No results found for "{query}"</div>;
+  if (loading)
+    return <div className="text-center mt-20 text-lg">Loading...</div>;
+  if (results.length === 0)
+    return (
+      <div className="text-center mt-20 text-lg">
+        No results found for "{query}"
+      </div>
+    );
 
   return (
     <div className="container mx-auto py-6">

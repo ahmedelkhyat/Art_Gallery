@@ -1,9 +1,10 @@
-"use client"; // إضافة هذا السطر في الأعلى لجعل المكون عميلًا
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // استخدام next/navigation
-import { BiCart } from "react-icons/bi"; // أيقونة العربة
-import { CgSearch } from "react-icons/cg"; // أيقونة البحث
+import { useRouter } from "next/navigation";
+import { BiCart } from "react-icons/bi";
+import { CgSearch } from "react-icons/cg";
+import { useAuth } from "../context/AuthContext";
 
 const itemList = [
   { name: "All Categories", path: "/" },
@@ -14,18 +15,10 @@ const itemList = [
 ];
 
 const Navbar = () => {
+  const { userData, logout } = useAuth();
   const [query, setQuery] = useState("");
-  const [user, setUser] = useState(null); // حالة المستخدم
   const router = useRouter();
-  const [isMenuOpen, setMenuOpen] = useState(false); // حالة القائمة
-
-  // استعادة حالة المستخدم من localStorage عند تحميل الصفحة
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // استعادة حالة المستخدم من localStorage
-    }
-  }, []);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   const searchHandler = () => {
     if (query) {
@@ -33,31 +26,13 @@ const Navbar = () => {
     }
   };
 
-  const handleLogin = () => {
-    // هنا يمكنك إضافة وظيفة تسجيل الدخول الخاصة بك
-    const userData = { name: "Ahmed" }; // بيانات المستخدم
-    localStorage.setItem("user", JSON.stringify(userData)); // تخزين البيانات في localStorage
-    setUser(userData); // تعيين حالة المستخدم
-  };
-
-  const handleLogout = () => {
-    // هنا يمكنك إضافة وظيفة تسجيل الخروج الخاصة بك
-    setUser(null); // تعيين حالة المستخدم كـ null
-    localStorage.removeItem("user"); // حذف بيانات المستخدم من localStorage
-    router.push("/"); // إعادة التوجيه إلى الصفحة الرئيسية
-  };
-
   return (
     <>
-      {/* الجزء الأول: الشريط العلوي */}
       <div className="bg-gray-800 text-white py-3">
         <div className="container mx-auto flex justify-between items-center">
-          {/* شعار الموقع */}
           <Link href="/" className="text-3xl font-bold">
             MyStore
           </Link>
-
-          {/* زر قائمة التمرير في الشاشات الصغيرة */}
           <button
             className="md:hidden"
             onClick={() => setMenuOpen(!isMenuOpen)}
@@ -86,16 +61,16 @@ const Navbar = () => {
               )}
             </svg>
           </button>
-
-          {/* صندوق البحث */}
           <div
-            className={`flex items-center w-[50%] ${isMenuOpen ? "block" : "hidden"} md:flex`}
+            className={`flex items-center w-[50%] ${
+              isMenuOpen ? "block" : "hidden"
+            } md:flex`}
           >
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="ابحث عن منتج..."
+              placeholder="Search for a product..."
               className="w-full p-2 rounded-l-md outline-none text-black"
             />
             <button
@@ -105,48 +80,42 @@ const Navbar = () => {
               <CgSearch size="24px" className="text-black" />
             </button>
           </div>
-
-          {/* روابط الحساب وعربة التسوق */}
           <div className="flex items-center space-x-6">
-            {/* رابط تسجيل الدخول أو اسم المستخدم */}
-            {user ? (
+            {userData ? (
               <>
+                <Link href="/Profile" className="hover:underline">
+                  Welcome, {userData.name}
+                </Link>
                 <span
                   className="hover:underline cursor-pointer"
-                  onClick={handleLogout}
+                  onClick={logout}
                 >
-                  تسجيل الخروج
+                  Logout
                 </span>
-                <Link href="/Profile" className="hover:underline">
-                  {user.name} (الملف الشخصي)
-                </Link>
               </>
             ) : (
               <>
                 <Link href="/customer/login" className="hover:underline">
-                  تسجيل الدخول
+                  Login
                 </Link>
                 <Link href="/customer/signup" className="hover:underline">
-                  إنشاء حساب
+                  Sign Up
                 </Link>
               </>
             )}
-
-            {/* عربة التسوق */}
             <Link href="/cart">
               <div className="relative cursor-pointer flex items-center">
                 <BiCart size="32px" />
-                <span className="absolute top-0 right-0 bg-yellow-400 text-black rounded-full w-5 h-5 text-center text-xs">
-                  0
-                </span>
               </div>
             </Link>
           </div>
         </div>
       </div>
-
-      {/* الجزء الثاني: شريط الفئات */}
-      <div className={`bg-gray-700 text-white py-2 ${isMenuOpen ? "block" : "hidden"} md:flex`}>
+      <div
+        className={`bg-gray-700 text-white py-2 ${
+          isMenuOpen ? "block" : "hidden"
+        } md:flex`}
+      >
         <div className="container mx-auto flex justify-center space-x-4 overflow-x-auto">
           {itemList.map((item, index) => (
             <Link

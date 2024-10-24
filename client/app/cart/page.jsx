@@ -1,26 +1,25 @@
-"use client"; // استخدم العميل، لأننا نحتاج للـ useEffect
-
+"use client";
 import { useState, useEffect } from "react";
-import Link from "next/link"; // لإضافة رابط للذهاب إلى صفحة الدفع
-import Image from "next/image"; // لتحسين عرض الصور
-import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi"; // أيقونات من react-icons
+import Link from "next/link";
+import Image from "next/image";
+import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 import Footer from "../ui/Footer";
 import Navbar from "../ui/navbar";
-import { useRouter } from "next/navigation"; // استخدم useRouter
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 const Cart = () => {
-  const router = useRouter(); // استخدام useRouter
+  const router = useRouter();
+  const { currentUser } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // حالة تسجيل الدخول
 
-  // جلب قائمة المنتجات المتاحة من API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch("http://localhost:5000/products");
         const data = await response.json();
-        console.log(data); // تحقق من البيانات
+        console.log(data);
         setAvailableProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -30,38 +29,31 @@ const Cart = () => {
     fetchProducts();
   }, []);
 
-  // جلب المنتجات من الـ localStorage
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(storedCart);
   }, []);
 
-  // التحقق من حالة تسجيل الدخول
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    const userLoggedIn = accessToken ? true : false; // إذا كان الـ token موجودًا، اعتبر أن المستخدم مسجل دخول
-
-    setIsLoggedIn(userLoggedIn);
-
-    if (!userLoggedIn) {
-      router.push("/customer/login"); // إعادة التوجيه إلى صفحة تسجيل الدخول
+    if (!currentUser) {
+      router.push("/customer/login");
     }
-  }, [router]);
+  }, [currentUser, router]);
 
-  // مسح سلة التسوق
   const clearCart = () => {
     localStorage.removeItem("cart");
     setCartItems([]);
   };
 
-  // إضافة منتج إلى السلة
   const addProductToCart = (product) => {
-    const updatedCart = [...cartItems, { ...product, price: Number(product.price), quantity: 1 }];
+    const updatedCart = [
+      ...cartItems,
+      { ...product, price: Number(product.price), quantity: 1 },
+    ];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setCartItems(updatedCart);
   };
 
-  // زيادة الكمية
   const increaseQuantity = (index) => {
     const updatedCart = [...cartItems];
     updatedCart[index].quantity += 1;
@@ -69,7 +61,6 @@ const Cart = () => {
     setCartItems(updatedCart);
   };
 
-  // تقليل الكمية
   const decreaseQuantity = (index) => {
     const updatedCart = [...cartItems];
     if (updatedCart[index].quantity > 1) {
@@ -79,7 +70,6 @@ const Cart = () => {
     }
   };
 
-  // إزالة منتج من السلة
   const removeProduct = (index) => {
     const updatedCart = cartItems.filter((_, i) => i !== index);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -91,16 +81,15 @@ const Cart = () => {
       <>
         <Navbar />
         <p className="min-h-screen text-center flex justify-center items-center text-4xl text-gray-500">
-          سلة التسوق فارغة
+          Your cart is empty
         </p>
         <Footer />
       </>
     );
   }
 
-  // حساب إجمالي السعر
   const total = cartItems.reduce(
-    (acc, item) => acc + (Number(item.price) * item.quantity),
+    (acc, item) => acc + Number(item.price) * item.quantity,
     0
   );
 
@@ -109,7 +98,7 @@ const Cart = () => {
       <Navbar />
       <div className="container mx-auto py-10 px-4">
         <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
-          سلة التسوق
+          Shopping Cart
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cartItems.map((item, index) => (
@@ -119,7 +108,7 @@ const Cart = () => {
             >
               <div className="flex items-center w-full md:w-auto">
                 <Image
-                  src={`/images/${item.image}`} // تأكد من أن الصورة تستخدم المسار الصحيح
+                  src={`/images/${item.image}`}
                   alt={item.title}
                   width={100}
                   height={100}
@@ -162,11 +151,11 @@ const Cart = () => {
         </div>
         <div className="mt-8 flex justify-between items-center flex-wrap">
           <p className="text-2xl font-bold text-green-600">
-            الإجمالي: ${total.toFixed(2)}
+            Total: ${total.toFixed(2)}
           </p>
           <Link href="/checkout">
             <button className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition duration-200 mt-4 sm:mt-0">
-              متابعة إلى الدفع
+              Proceed to Checkout
             </button>
           </Link>
         </div>
@@ -175,10 +164,10 @@ const Cart = () => {
             onClick={clearCart}
             className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200"
           >
-            مسح السلة
+            Clear Cart
           </button>
         </div>
-        <h2 className="text-2xl font-bold mt-6">إضافة منتج</h2>
+        <h2 className="text-2xl font-bold mt-6">Add Product</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
           {availableProducts.map((product) => (
             <div
@@ -186,7 +175,7 @@ const Cart = () => {
               className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
               <Image
-                src={`/images/${product.image}`} // تأكد من أن الصورة في المسار الصحيح
+                src={`/images/${product.image}`}
                 alt={product.title}
                 width={100}
                 height={100}
@@ -202,7 +191,7 @@ const Cart = () => {
                 onClick={() => addProductToCart(product)}
                 className="mt-4 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200"
               >
-                إضافة إلى السلة
+                Add to Cart
               </button>
             </div>
           ))}
