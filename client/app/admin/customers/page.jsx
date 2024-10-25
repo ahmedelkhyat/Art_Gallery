@@ -1,15 +1,9 @@
-// import { CreateProduct } from "../ui/admin/buttons";
-// import Search from "../ui/admin/search";
 import { lusitana } from "../../ui/fonts";
 import Table from "../../ui/admin/customer/tabel";
 import { Suspense } from "react";
 import { ProductsTableSkeleton } from "../../ui/skeletons";
-import { CreateProduct } from "@/app/ui/admin/buttons";
 import Search from "@/app/ui/admin/search";
-export default async function page({ searchParams }) {
-  const query = searchParams?.query || "";
-  const currentPage = Number(searchParams?.page) || 1;
-
+export default async function page({}) {
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
@@ -17,7 +11,6 @@ export default async function page({ searchParams }) {
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Search Customer..." />
-        <CreateProduct />
       </div>
       <Suspense fallback={<ProductsTableSkeleton />}>
         <Table />
