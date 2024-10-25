@@ -2,8 +2,6 @@
 
 import {
   UserGroupIcon,
-  HomeIcon,
-  DocumentDuplicateIcon,
   RectangleStackIcon,
   ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
