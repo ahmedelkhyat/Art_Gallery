@@ -171,18 +171,16 @@ const Cart = () => {
           </h2>
         </div>
         <h2 className="text-2xl font-bold mt-6">Add Product</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           {availableProducts.map((product) => (
             <div
               key={product.product_id}
               className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
             >
-              <Image
+              <img
                 src={`/images/${product.image}`}
                 alt={product.title}
-                width={100}
-                height={100}
-                className="object-cover rounded-lg"
+                className="object-cover rounded-lg h-52 w-full"
               />
               <h3 className="text-lg font-semibold text-gray-800 hover:text-yellow-600 transition duration-200">
                 {product.title}
