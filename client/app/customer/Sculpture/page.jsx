@@ -11,12 +11,17 @@ const Sculpture = () => {
   useEffect(() => {
     const fetchSculptures = async () => {
       try {
-        const response = await fetch("http://localhost:5000/products?category_id=2"); // استخدام category_id = 2 للمنحوتات
+        const response = await fetch(
+          "http://localhost:5000/products?category_id=2"
+        ); // استخدام category_id = 2 للمنحوتات
         if (!response.ok) {
           throw new Error("Network response was not ok"); // معالجة الأخطاء
         }
         const data = await response.json();
-        setSculptures(data);
+        const filteredProducts = data.filter(
+          (product) => product.category_id === 2
+        );
+        setSculptures(filteredProducts);
       } catch (error) {
         console.error("Error fetching sculptures:", error);
         setError(error.message); // تخزين رسالة الخطأ
@@ -33,11 +38,18 @@ const Sculpture = () => {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">Sculptures</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
+        Sculptures
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {sculptures.map((sculpture) => (
-          <div key={sculpture.product_id} className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105">
-            <Link href={`/customer/${sculpture.product_id}/view`}> {/* تعديل هنا */}
+          <div
+            key={sculpture.product_id}
+            className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105"
+          >
+            <Link href={`/customer/${sculpture.product_id}/view`}>
+              {" "}
+              {/* تعديل هنا */}
               <div className="relative">
                 <img
                   src={`/images/${sculpture.image}`} // استخدام الصورة من قاعدة البيانات
@@ -49,10 +61,18 @@ const Sculpture = () => {
                 </div>
               </div>
               <div className="p-4 bg-white">
-                <h3 className="text-lg font-semibold text-gray-900">{sculpture.title}</h3>
-                <p className="text-gray-600 mt-2">{sculpture.description.slice(0, 60)}...</p>
-                <p className="text-xl font-bold text-gray-900 mt-4">${sculpture.price}</p>
-                <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">إضافة إلى السلة</button>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {sculpture.title}
+                </h3>
+                <p className="text-gray-600 mt-2">
+                  {sculpture.description.slice(0, 60)}...
+                </p>
+                <p className="text-xl font-bold text-gray-900 mt-4">
+                  ${sculpture.price}
+                </p>
+                <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
+                  إضافة إلى السلة
+                </button>
               </div>
             </Link>
           </div>

@@ -6,14 +6,6 @@ import { BiCart } from "react-icons/bi";
 import { CgSearch } from "react-icons/cg";
 import { useAuth } from "../context/AuthContext";
 
-const itemList = [
-  { name: "All Categories", path: "/" },
-  { name: "Painting", path: "/Painting" },
-  { name: "Sculpture", path: "/Sculpture" },
-  { name: "Photography", path: "/Photography" },
-  { name: "Digital Art", path: "/DigitalArt" },
-];
-
 const Navbar = () => {
   const { userData, logout } = useAuth();
   const [query, setQuery] = useState("");
@@ -25,6 +17,13 @@ const Navbar = () => {
       router.push(`/SearchPage/${query}`);
     }
   };
+  const itemList = [
+    { name: "All Categories", path: "/" },
+    { name: "Painting", path: "/customer/Painting" },
+    { name: "Sculpture", path: "/customer/Sculpture" },
+    { name: "Photography", path: "/customer/Photography" },
+    { name: "Digital Art", path: "/customer/DigitalArt" },
+  ];
 
   return (
     <>
