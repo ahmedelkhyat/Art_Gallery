@@ -7,6 +7,7 @@ const Sculpture = () => {
   const [sculptures, setSculptures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // لإدارة الأخطاء
+  const token = localStorage.getItem("refreshToken");
 
   useEffect(() => {
     const fetchSculptures = async () => {
@@ -70,9 +71,11 @@ const Sculpture = () => {
                 <p className="text-xl font-bold text-gray-900 mt-4">
                   ${sculpture.price}
                 </p>
-                <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
-                  إضافة إلى السلة
-                </button>
+                {token && (
+                  <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
+                    Add to cart{" "}
+                  </button>
+                )}
               </div>
             </Link>
           </div>

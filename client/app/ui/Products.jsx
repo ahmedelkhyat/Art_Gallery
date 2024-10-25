@@ -7,6 +7,7 @@ import Link from "next/link";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("refreshToken");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -85,12 +86,15 @@ const Products = () => {
               <p className="text-xl font-bold text-gray-900 mt-2">
                 ${product.price}
               </p>
-              <button
-                onClick={() => addToCart(product)}
-                className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition"
-              >
-                Add to Cart
-              </button>
+
+              {token && (
+                <button
+                  onClick={() => addToCart(product)}
+                  className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition"
+                >
+                  Add to cart{" "}
+                </button>
+              )}
             </div>
           </div>
         ))}

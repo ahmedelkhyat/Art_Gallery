@@ -9,6 +9,7 @@ const ProductDetails = ({ params }) => {
   const id = params.id; // الحصول على معرف المنتج من الرابط
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("refreshToken");
 
   useEffect(() => {
     if (id) {
@@ -79,12 +80,11 @@ const ProductDetails = ({ params }) => {
           <p className="text-xl font-bold text-gray-900 mt-4">
             ${product.price}
           </p>
-          <button
-            onClick={addToCart} // ربط الزر بالدالة
-            className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition"
-          >
-            Add to cart{" "}
-          </button>
+          {token && (
+            <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
+              Add to cart{" "}
+            </button>
+          )}
         </div>
       </div>
     </div>
