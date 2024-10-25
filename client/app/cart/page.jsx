@@ -54,8 +54,10 @@ const Cart = () => {
       updatedCart[existingItemIndex].quantity += 1;
     } else {
       updatedCart.push({
-        ...product,
+        id: product.product_id,
+        title: product.title,
         price: Number(product.price),
+        image: product.image,
         quantity: 1,
       });
     }
