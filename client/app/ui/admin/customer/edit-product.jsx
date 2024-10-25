@@ -1,8 +1,3 @@
-// import { useState } from "react";
-// import { useRouter } from "next/navigation";
-// import Swal from "sweetalert2";
-// import Link from "next/link";
-// import { Button } from "@/app/ui/admin/buttons";"use client";
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
