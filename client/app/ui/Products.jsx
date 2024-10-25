@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import Link from "next/link";
 
 const Products = () => {
@@ -35,7 +36,22 @@ const Products = () => {
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
     const updatedCart = [...existingCart, cartItem];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    alert(`${product.title} has been added to the cart!`);
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: `${product.title} has been added to the cart!`,
+    });
   };
 
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;

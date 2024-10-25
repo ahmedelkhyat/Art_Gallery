@@ -83,7 +83,7 @@ const Navbar = () => {
             {userData ? (
               <>
                 <Link href="/Profile" className="hover:underline">
-                  Welcome, {userData.name}
+                  {userData.name}
                 </Link>
                 <span
                   className="hover:underline cursor-pointer"
