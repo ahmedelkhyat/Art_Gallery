@@ -246,47 +246,6 @@ export default function EditProductForm({ product }) {
         </fieldset>
 
         {/* Is Admin */}
-        <fieldset className="mt-5">
-          <legend className="mb-2 block text-sm font-medium">Is Admin</legend>
-          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-            <div className="flex gap-4">
-              <div className="flex items-center">
-                <input
-                  id="true"
-                  name="admin"
-                  type="radio"
-                  value="true" // Change this line
-                  checked={formData.admin === true} // Check if admin is true
-                  onChange={handleInputChange}
-                  className="h-4 w-4 cursor-pointer border-gray-300 text-gray-600 focus:ring-2"
-                />
-                <label
-                  htmlFor="true"
-                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-600 px-3 py-1.5 text-xs font-medium text-white"
-                >
-                  Yes
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="false"
-                  name="admin"
-                  type="radio"
-                  value="false" // Change this line
-                  checked={formData.admin === false} // Check if admin is false
-                  onChange={handleInputChange}
-                  className="h-4 w-4 cursor-pointer border-gray-300 text-gray-600 focus:ring-2"
-                />
-                <label
-                  htmlFor="false"
-                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600"
-                >
-                  No
-                </label>
-              </div>
-            </div>
-          </div>
-        </fieldset>
 
         {/* Submit Button */}
         <div className="mt-6 flex justify-end gap-4">
