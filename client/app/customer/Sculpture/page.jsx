@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 const Sculpture = () => {
   const [sculptures, setSculptures] = useState([]);
@@ -33,7 +34,35 @@ const Sculpture = () => {
 
     fetchSculptures();
   }, []);
+  const addToCart = (product) => {
+    const cartItem = {
+      id: product.product_id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+      quantity: 1,
+    };
 
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const updatedCart = [...existingCart, cartItem];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: `${product.title} has been added to the cart!`,
+    });
+  };
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>; // عرض رسالة الخطأ
 
@@ -48,36 +77,39 @@ const Sculpture = () => {
             key={sculpture.product_id}
             className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105"
           >
-            <Link href={`/customer/${sculpture.product_id}/view`}>
-              {" "}
-              {/* تعديل هنا */}
-              <div className="relative">
+            {" "}
+            {/* تعديل هنا */}
+            <div className="relative">
+              <Link href={`/customer/${sculpture.product_id}/view`}>
                 <img
                   src={`/images/${sculpture.image}`} // استخدام الصورة من قاعدة البيانات
                   alt={sculpture.title}
                   className="w-full h-64 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                 />
-                <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                  جديد
-                </div>
+              </Link>
+              <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                جديد
               </div>
-              <div className="p-4 bg-white">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {sculpture.title}
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  {sculpture.description.slice(0, 60)}...
-                </p>
-                <p className="text-xl font-bold text-gray-900 mt-4">
-                  ${sculpture.price}
-                </p>
-                {token && (
-                  <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
-                    Add to cart{" "}
-                  </button>
-                )}
-              </div>
-            </Link>
+            </div>
+            <div className="p-4 bg-white">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {sculpture.title}
+              </h3>
+              <p className="text-gray-600 mt-2">
+                {sculpture.description.slice(0, 60)}...
+              </p>
+              <p className="text-xl font-bold text-gray-900 mt-4">
+                ${sculpture.price}
+              </p>
+              {token && (
+                <button
+                  onClick={() => addToCart(sculpture)}
+                  className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition"
+                >
+                  Add to cart{" "}
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image"; // لتحسين عرض الصور
+import Swal from "sweetalert2";
 
 const Painting = () => {
   const [products, setProducts] = useState([]);
@@ -32,7 +33,35 @@ const Painting = () => {
 
     fetchProducts();
   }, []);
+  const addToCart = (product) => {
+    const cartItem = {
+      id: product.product_id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+      quantity: 1,
+    };
 
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const updatedCart = [...existingCart, cartItem];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: `${product.title} has been added to the cart!`,
+    });
+  };
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>; // عرض رسالة الخطأ
 
@@ -47,10 +76,10 @@ const Painting = () => {
             key={product.product_id}
             className="border rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:scale-105"
           >
-            <Link href={`/customer/${product.product_id}/view`}>
-              {" "}
-              {/* تعديل هنا */}
-              <div className="relative">
+            {" "}
+            {/* تعديل هنا */}
+            <div className="relative">
+              <Link href={`/customer/${product.product_id}/view`}>
                 <Image
                   src={`/images/${product.image}`} // تعديل مسار الصورة
                   alt={product.title}
@@ -58,27 +87,30 @@ const Painting = () => {
                   height={300} // ارتفاع الصورة
                   className="w-full h-64 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                 />
-                <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                  جديد
-                </div>
+              </Link>
+              <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                جديد
               </div>
-              <div className="p-4 bg-white">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {product.title}
-                </h3>
-                <p className="text-gray-600 mt-2">
-                  {product.description.slice(0, 60)}...
-                </p>
-                <p className="text-xl font-bold text-gray-900 mt-4">
-                  ${product.price}
-                </p>
-                {token && (
-                  <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
-                    Add to cart{" "}
-                  </button>
-                )}
-              </div>
-            </Link>
+            </div>
+            <div className="p-4 bg-white">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {product.title}
+              </h3>
+              <p className="text-gray-600 mt-2">
+                {product.description.slice(0, 60)}...
+              </p>
+              <p className="text-xl font-bold text-gray-900 mt-4">
+                ${product.price}
+              </p>
+              {token && (
+                <button
+                  onClick={() => addToCart(product)}
+                  className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition"
+                >
+                  Add to cart{" "}
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

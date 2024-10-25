@@ -81,7 +81,10 @@ const ProductDetails = ({ params }) => {
             ${product.price}
           </p>
           {token && (
-            <button className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">
+            <button
+              onClick={() => addToCart(product)}
+              className="mt-4 bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition"
+            >
               Add to cart{" "}
             </button>
           )}
