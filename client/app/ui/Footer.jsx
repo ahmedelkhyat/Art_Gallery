@@ -1,4 +1,4 @@
-"use client"; // مكون عميل
+"use client";
 
 import Link from "next/link";
 import {
@@ -6,23 +6,22 @@ import {
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
-} from "react-icons/fa"; // استيراد أيقونات وسائل التواصل الاجتماعي
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-10">
       <div className="container mx-auto px-4">
-        {/* قسم الروابط */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
           <div>
-            <h4 className="font-bold text-lg mb-4">معلومات عنا</h4>
+            <h4 className="font-bold text-lg mb-4">About Us</h4>
             <ul>
               <li>
                 <Link
                   href="/about"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  من نحن
+                  Who We Are
                 </Link>
               </li>
               <li>
@@ -30,7 +29,7 @@ const Footer = () => {
                   href="/contact"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  اتصل بنا
+                  Contact Us
                 </Link>
               </li>
               <li>
@@ -38,20 +37,20 @@ const Footer = () => {
                   href="/careers"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  فرص العمل
+                  Careers
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-lg mb-4">خدمات العملاء</h4>
+            <h4 className="font-bold text-lg mb-4">Customer Service</h4>
             <ul>
               <li>
                 <Link
                   href="/faq"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  الأسئلة الشائعة
+                  FAQ
                 </Link>
               </li>
               <li>
@@ -59,7 +58,7 @@ const Footer = () => {
                   href="/returns"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  سياسة الإرجاع
+                  Returns Policy
                 </Link>
               </li>
               <li>
@@ -67,20 +66,20 @@ const Footer = () => {
                   href="/shipping"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  الشحن والتوصيل
+                  Shipping & Delivery
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-lg mb-4">تسوق</h4>
+            <h4 className="font-bold text-lg mb-4">Shop</h4>
             <ul>
               <li>
                 <Link
                   href="/products"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  المنتجات
+                  Products
                 </Link>
               </li>
               <li>
@@ -88,7 +87,7 @@ const Footer = () => {
                   href="/categories"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  الفئات
+                  Categories
                 </Link>
               </li>
               <li>
@@ -96,20 +95,20 @@ const Footer = () => {
                   href="/specials"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  العروض الخاصة
+                  Specials
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-lg mb-4">سياسات</h4>
+            <h4 className="font-bold text-lg mb-4">Policies</h4>
             <ul>
               <li>
                 <Link
                   href="/privacy"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  سياسة الخصوصية
+                  Privacy Policy
                 </Link>
               </li>
               <li>
@@ -117,7 +116,7 @@ const Footer = () => {
                   href="/terms"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  شروط الخدمة
+                  Terms of Service
                 </Link>
               </li>
               <li>
@@ -125,13 +124,13 @@ const Footer = () => {
                   href="/cookies"
                   className="hover:underline hover:text-yellow-400"
                 >
-                  سياسة الكوكيز
+                  Cookie Policy
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-lg mb-4">تابعنا</h4>
+            <h4 className="font-bold text-lg mb-4">Follow Us</h4>
             <div className="flex space-x-4">
               <Link href="#" className="hover:text-yellow-400">
                 <FaFacebookF size={20} />
@@ -149,9 +148,8 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* قسم حقوق النشر */}
         <div className="text-center text-gray-400">
-          <p>© 2024 MyStore. جميع الحقوق محفوظة.</p>
+          <p>© 2024 MyStore. All rights reserved.</p>
         </div>
       </div>
     </footer>
