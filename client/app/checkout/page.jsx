@@ -1,4 +1,6 @@
 "use client";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 import { useState, useEffect } from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -11,6 +13,7 @@ import "aos/dist/aos.css";
 import { useAuth } from "../context/AuthContext";
 
 const Checkout = () => {
+  const router = useRouter();
   const { userData } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -46,6 +49,15 @@ const Checkout = () => {
         body: JSON.stringify(orderData),
       });
 
+      if (response.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Product updated successfully!",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        router.push("/");
+      }
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
