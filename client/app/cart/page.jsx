@@ -88,16 +88,6 @@ const Cart = () => {
     setCartItems(updatedCart);
   };
 
-  // if () {
-  //   return (
-  //     <>
-  //       <Navbar />
-  //
-  //       <Footer />
-  //     </>
-  //   );
-  // }
-
   const total = cartItems.reduce(
     (acc, item) => acc + Number(item.price) * item.quantity,
     0
@@ -171,6 +161,13 @@ const Cart = () => {
               <h2 className="text-2xl font-bold text-gray-800">
                 Total: ${total.toFixed(2)}
               </h2>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <Link href="/checkout">
+                <button className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition duration-200">
+                  Checkout
+                </button>
+              </Link>
             </div>
           </>
         ) : (
