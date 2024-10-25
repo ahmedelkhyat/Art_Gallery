@@ -1,22 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { BiCart } from "react-icons/bi";
 import { CgSearch } from "react-icons/cg";
 import { useAuth } from "../context/AuthContext";
+import Image from "next/image";
 
 const Navbar = () => {
   const { userData, logout } = useAuth();
   const [query, setQuery] = useState("");
-  const router = useRouter();
+
   const [isMenuOpen, setMenuOpen] = useState(false);
 
-  const searchHandler = () => {
-    if (query) {
-      router.push(`/SearchPage/${query}`);
-    }
-  };
   const itemList = [
     { name: "All Categories", path: "/" },
     { name: "Painting", path: "/customer/Painting" },
@@ -30,7 +26,13 @@ const Navbar = () => {
       <div className="bg-gray-800 text-white py-3">
         <div className="container mx-auto flex justify-between items-center">
           <Link href="/" className="text-3xl font-bold">
-            MyStore
+            <Image
+              src={"/logo_1.avif"}
+              className="rounded-full bg-yellow-600 p-2"
+              alt={`Logo`}
+              width={120}
+              height={120}
+            />
           </Link>
           <button
             className="md:hidden"
@@ -70,12 +72,9 @@ const Navbar = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search for a product..."
-              className="w-full p-2 rounded-l-md outline-none text-black"
+              className="w-80 p-2 rounded-l-md outline-none text-black"
             />
-            <button
-              onClick={searchHandler}
-              className="bg-yellow-400 p-2 rounded-r-md hover:bg-yellow-500"
-            >
+            <button className="bg-yellow-400 p-2 rounded-r-md hover:bg-yellow-500">
               <CgSearch size="24px" className="text-black" />
             </button>
           </div>
