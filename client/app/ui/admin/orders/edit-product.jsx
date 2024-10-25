@@ -6,7 +6,9 @@ import {
   CheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
+  PaperAirplaneIcon,
   UserCircleIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/outline";
 import Swal from "sweetalert2";
 
@@ -176,6 +178,40 @@ export default function EditInvoiceForm({ order, users }) {
                   className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-white"
                 >
                   Shipped <CheckIcon className="h-4 w-4" />
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  id="Delivered"
+                  name="status"
+                  type="radio"
+                  value="Delivered"
+                  checked={formState.status === "Delivered"}
+                  onChange={handleInputChange}
+                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                />
+                <label
+                  htmlFor="Delivered"
+                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-blue-500 px-3 py-1.5 text-xs font-medium text-white"
+                >
+                  Delivered <PaperAirplaneIcon className="h-4 w-4" />
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  id="Cancelled"
+                  name="status"
+                  type="radio"
+                  value="Cancelled"
+                  checked={formState.status === "Cancelled"}
+                  onChange={handleInputChange}
+                  className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
+                />
+                <label
+                  htmlFor="Cancelled"
+                  className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-red-500 px-3 py-1.5 text-xs font-medium text-white"
+                >
+                  Cancelled <XCircleIcon className="h-4 w-4" />
                 </label>
               </div>
             </div>
